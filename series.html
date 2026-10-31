@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rockeroleg — серии</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500&family=Archivo:wght@500&family=Caveat:wght@500&family=PT+Mono&family=Spectral:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --dark: #060606;
+  --paper: #f1f0ec;
+  --ink: #141413;
+  --muted: #8a887f;
+  --red: #b3120f;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font: 400 15px/1.5 'Onest', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+a { color: inherit; text-decoration: none; }
+img { display: block; }
+.mono { font: 400 11px 'PT Mono', ui-monospace, monospace; letter-spacing: .14em; text-transform: uppercase; }
+
+/* логотип и подчёркивания — как на главной */
+.brand { position: relative; display: inline-block; padding-top: 16px; white-space: nowrap; }
+.brand-word { display: inline-block; font: 500 26px/1 'Archivo', sans-serif; letter-spacing: .07em; color: var(--ink); }
+.brand-word span { display: inline-block; }
+.brand-hand { position: absolute; left: -6px; top: -4px; font: 500 21px/1 'Caveat', cursive; color: #e01e1e; transform: rotate(-6deg); }
+.brand-hand svg { display: block; width: 2.3em; height: auto; } /* «фото» — почерк, вектор из handwriting/foto.svg */
+.brand-hand { transition: transform .35s cubic-bezier(.3,1.4,.5,1); }
+/* при наведении красное «фото» чуть сильнее наклоняется, будто его только что дописали */
+.brand:hover .brand-hand { transform: rotate(-13deg) translate(-2px, -1px); }
+.scrib { position: relative; }
+.scrib::after {
+  content: ''; position: absolute; left: -4px; right: -4px; bottom: -7px; height: 9px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M2 6c15-4 30 3 48-1s32 2 48-2M6 8c20-3 40 2 60-1' stroke='%23c11414' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") center/100% 100% no-repeat;
+  clip-path: inset(0 100% 0 0); transition: clip-path .35s ease;
+}
+.scrib:hover::after, .scrib[aria-current]::after { clip-path: inset(0 0 0 0); }
+
+/* ── шапка ── */
+/* шапка как на главной: светлая бумага, крупное слово, спокойное оглавление одной строкой */
+.top { padding: 22px 36px 0; }
+.top header { display: flex; justify-content: space-between; align-items: center; }
+.top nav { display: flex; gap: 28px; font-size: 14px; }
+.intro { margin-top: 120px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 32px 64px; align-items: end; }
+/* заголовки — голосом сайта, как логотип; тексты Андрея ниже — книжным Spectral */
+.intro h1 { font: 500 clamp(48px, 8vw, 112px)/.9 'Archivo', sans-serif; letter-spacing: -.045em; }
+.intro p { color: var(--muted); }
+.index { margin-top: 56px; padding-bottom: 28px; border-bottom: 1px solid #dcdad2; display: flex; flex-wrap: wrap; gap: 10px 28px; font-size: 15px; color: var(--muted); }
+.index a { transition: color .25s; }
+.index a:hover { color: var(--ink); }
+.index .n { margin-right: 6px; font-size: 10px; color: var(--red); }
+.index .org { color: var(--ink); }
+
+/* ── серия ── */
+.series { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 24px 48px; padding: 88px 36px 0; }
+.meta { position: sticky; top: 24px; align-self: start; }
+.meta .no { color: var(--red); }
+.meta h2 { margin-top: 10px; font: 500 30px/1.05 'Archivo', sans-serif; letter-spacing: -.035em; }
+.meta dl { margin-top: 18px; display: grid; gap: 6px; color: var(--muted); }
+.meta dd { color: var(--ink); font: 400 14px 'Onest', sans-serif; letter-spacing: 0; text-transform: none; }
+
+/* полоса плёнки: тёмная основа, перфорация сверху и снизу, кадры листаются */
+.strip {
+  position: relative; background: #0d0d0c; padding: 26px 0; scroll-snap-type: x mandatory;
+}
+/* ряды, которые листаются вбок: только горизонтальная прокрутка, тонкая */
+.scroller { overflow-x: auto; overflow-y: hidden; scrollbar-width: thin; scrollbar-color: #8a887f55 transparent; }
+.scroller::-webkit-scrollbar { height: 4px; }
+.scroller::-webkit-scrollbar-thumb { background: #8a887f55; border-radius: 2px; }
+.scroller::-webkit-scrollbar-button { display: none; }
+.strip::before, .strip::after {
+  content: ''; position: sticky; left: 0; display: block; width: 100%; height: 10px;
+  background: repeating-linear-gradient(90deg, transparent 0 14px, #f1f0ec22 14px 26px, transparent 26px 34px);
+}
+.strip::before { margin: -18px 0 8px; }
+.strip::after { margin: 8px 0 -18px; }
+.strip .row { display: flex; gap: 10px; padding: 0 10px; width: max-content; }
+.strip button { border: 0; padding: 0; background: none; cursor: zoom-in; scroll-snap-align: start; }
+.strip img { height: clamp(220px, 34vw, 420px); width: auto; filter: grayscale(.15); transition: filter .4s; }
+.strip button:hover img { filter: none; }
+
+/* у каждой серии своя раскладка — по тому, как она снята; плёнка только у Redscale */
+.series button { border: 0; padding: 0; background: none; cursor: zoom-in; display: block; flex: none; }
+/* Форма: крупно и впритык — движению тесно в рамке */
+.tight { display: flex; }
+.tight img { height: clamp(260px, 40vw, 540px); width: auto; }
+/* Вещи после людей, «ПОМОЩЬ»: спокойный ряд, много воздуха */
+.air { display: flex; flex-wrap: wrap; gap: 40px 32px; align-items: flex-end; }
+.air button { border: 0; padding: 0; background: none; cursor: zoom-in; }
+.air img { height: clamp(150px, 17vw, 250px); width: auto; }
+/* Лицо как узор: типология, одинаковые клетки */
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; max-width: 760px; }
+.grid img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+/* СЕМЬ: крупные отпечатки, чтобы читался текст от руки */
+.prints { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; max-width: 900px; }
+.prints img { width: 100%; height: auto; }
+/* Кадый: как книжка — кадры и текст чередуются */
+.book .page + .page { margin-top: 64px; }
+.book .pics { display: flex; gap: 10px; }
+.book .pics img { height: clamp(200px, 26vw, 380px); width: auto; }
+/* Новосибирск: тёмная стена, на которую светит проектор */
+.wall { display: flex; gap: 18px; padding: clamp(28px, 5vw, 64px); background: radial-gradient(60% 70% at 50% 50%, rgba(255,236,200,.09), transparent 70%), #0d0d0c; }
+.wall img { height: clamp(200px, 26vw, 360px); width: auto; box-shadow: 0 0 60px rgba(255,236,200,.12); }
+/* полароиды: карточки чуть разбросаны по столу */
+.instant { display: flex; flex-wrap: wrap; gap: 28px 22px; padding: 10px 0; }
+.instant button { transform: rotate(var(--r)); box-shadow: 0 12px 26px -14px rgba(0,0,0,.45); transition: transform .3s; }
+.instant button:hover { transform: rotate(0) scale(1.03); }
+.instant img { height: clamp(180px, 20vw, 280px); width: auto; }
+/* тексты Андрея — книжным шрифтом, чтобы его голос отличался от интерфейса */
+.text { margin-top: 28px; max-width: 620px; font: 400 20px/1.55 'Spectral', Georgia, serif; white-space: pre-line; }
+.text + .text { margin-top: 18px; padding-top: 18px; border-top: 1px solid #dcdad2; }
+.text .at { color: var(--muted); }
+.text .d { display: block; margin-bottom: 6px; color: var(--muted); }
+
+/* ── кейс для организаторов: три отчёта ── */
+.case { margin: 88px 36px 0; } /* для организаторов — первым, сразу под списком серий */
+.case .kicker { color: var(--red); }
+.case h2 { margin-top: 14px; font: 500 clamp(34px, 5vw, 68px)/1 'Archivo', sans-serif; letter-spacing: -.04em; }
+.case h2 em { font-style: normal; position: relative; }
+.case h2 em svg { position: absolute; left: -6%; top: -16%; width: 112%; height: 132%; overflow: visible; }
+.case .lead { margin-top: 40px; max-width: 560px; color: var(--muted); }
+.parts { margin-top: 56px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 28px; }
+.part .pics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.part button { border: 0; padding: 0; background: none; cursor: zoom-in; }
+.part img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.part h3 { margin-top: 18px; font: 500 20px/1.2 'Archivo', sans-serif; letter-spacing: -.02em; }
+.part h3 .mono { display: block; margin-bottom: 6px; color: #e01e1e; }
+.part p { margin-top: 10px; color: #55534c; font: 400 17px/1.55 'Spectral', Georgia, serif; white-space: pre-line; }
+
+/* ── «ПОМОЩЬ» ── */
+.help { padding: 96px 36px 0; display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 24px 48px; }
+.help blockquote { font: italic 400 clamp(22px, 2.4vw, 30px)/1.3 'Spectral', Georgia, serif; max-width: 760px; }
+.help cite { display: block; margin-top: 14px; color: var(--muted); font-style: normal; }
+.help .air { margin-top: 40px; }
+.help .air button { border: 0; padding: 0; background: none; cursor: zoom-in; }
+
+/* ── камеры и связь ── */
+/* камеры — строки как в журнале съёмки; наведение показывает кадр, снятый этой камерой */
+.kit { margin: 128px 36px 0; display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 24px 48px; }
+.kit .label { color: var(--muted); }
+.kit ol { list-style: none; border-bottom: 1px solid #dcdad2; }
+.kit li { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: baseline; gap: 16px; padding: 14px 0; border-top: 1px solid #dcdad2; cursor: default; transition: color .25s; }
+.kit .n { color: var(--red); }
+.kit .name { font-size: clamp(22px, 2.6vw, 36px); font-weight: 500; letter-spacing: -.03em; line-height: 1.1; }
+.kit .note { color: var(--muted); text-align: right; }
+.kit li img { display: none; }
+.kit ol:hover li { color: #bcbab2; }
+.kit ol:hover li:hover { color: var(--ink); }
+.peek { position: fixed; left: 0; top: 0; z-index: 5; width: 200px; pointer-events: none; opacity: 0; transition: opacity .2s; box-shadow: 0 18px 40px -16px rgba(0,0,0,.45); }
+.peek.on { opacity: 1; }
+.peek img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+@media (hover: none) {
+  .kit li { grid-template-columns: 32px minmax(0, 1fr) 56px; align-items: center; }
+  .kit li img { display: block; width: 56px; aspect-ratio: 4 / 5; object-fit: cover; }
+  .kit .note { grid-column: 2; grid-row: 2; text-align: left; margin-top: -10px; }
+  .peek { display: none; }
+}
+.cta { margin: 96px 36px 0; padding: 72px 0; border-top: 1px solid #dcdad2; display: flex; justify-content: space-between; align-items: end; flex-wrap: wrap; gap: 24px; }
+.cta .big { font: 500 clamp(34px, 5vw, 68px)/1 'Archivo', sans-serif; letter-spacing: -.04em; }
+.cta a.go { background: var(--red); color: #fff; padding: 14px 26px; border-radius: 999px; font-weight: 500; font-size: 17px; }
+footer { padding: 0 36px 32px; display: flex; justify-content: space-between; color: var(--muted); }
+
+/* ── лупа ── */
+.loupe { position: fixed; inset: 0; z-index: 20; background: rgba(6,6,6,.94); display: none; place-items: center; padding: 24px; cursor: zoom-out; }
+.loupe.open { display: grid; }
+.loupe img { max-height: 86svh; max-width: min(92vw, 1200px); width: auto; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+.loupe .cap { margin-top: 14px; color: #8d8b83; display: flex; justify-content: space-between; gap: 16px; }
+.loupe .cap a { color: #d6d4cc; }
+
+@media (max-width: 900px) {
+  .intro { grid-template-columns: minmax(0, 1fr); margin-top: 64px; }
+  .series, .help, .kit { grid-template-columns: minmax(0, 1fr); } /* не 1fr: иначе ленты кадров распирают колонку шире экрана */
+  .meta { position: static; }
+  .parts { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 720px) {
+  .brand-word { font-size: 20px; }
+  .brand-hand { font-size: 18px; }
+  .top { padding: 16px 16px 0; }
+  .top nav { gap: 16px; font-size: 13px; }
+  .top nav a:first-child { display: none; } /* как на главной: на телефоне меню в одну строку с логотипом */
+  .series, .help { padding: 64px 16px 0; }
+  .text { font-size: 18px; }
+  .prints { grid-template-columns: minmax(0, 1fr); }
+  .air { gap: 20px 16px; }
+  .case { margin: 64px 16px 0; }
+  .kit, .cta { margin-left: 16px; margin-right: 16px; }
+  footer { padding: 0 16px 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand-word span { animation: none !important; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="scratch" x="-5%" y="-30%" width="110%" height="160%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.04 0.9" numOctaves="2" seed="3" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="3" result="d"/>
+    <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="1" seed="9" result="g"/>
+    <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.4 1.9" result="holes"/>
+    <feComposite in="d" in2="holes" operator="in"/>
+  </filter>
+  <filter id="wobble" x="-20%" y="-20%" width="140%" height="140%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="2" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="5"/>
+  </filter>
+</svg>
+
+<section class="top">
+  <header>
+    <a class="brand live" id="brand" href="./" aria-label="Rockeroleg, фото — на главную"><span class="brand-hand" aria-hidden="true"><svg class="hw" aria-hidden="true" focusable="false" viewBox="70 123 639 277"><path fill="currentColor" fill-rule="evenodd" d="M190.0 397.6C190.0 396.3 191.5 392.9 193.4 390.1C197.7 383.8 198.5 381.5 201.3 366.5C204.4 349.7 204.2 303.0 201.0 295.7C199.3 291.9 199.1 290.4 199.9 286.8C201.8 278.5 199.6 253.8 196.1 243.0C194.3 237.8 192.3 228.3 191.5 222.0C189.0 203.0 183.9 188.0 174.5 172.3C172.5 168.9 170.6 164.3 170.3 162.1C169.8 158.4 170.0 158.0 172.4 157.0C173.9 156.5 177.4 156.0 180.2 156.0C185.1 156.0 185.5 156.2 191.0 162.0C194.2 165.3 197.6 168.0 198.6 168.0C200.7 167.9 212.3 164.2 218.4 161.5C223.6 159.3 235.8 157.0 239.5 157.6C254.2 160.0 276.0 168.7 279.2 173.4C281.2 176.3 285.2 180.6 296.5 192.1C303.4 199.0 304.2 200.5 305.1 208.8C306.1 217.7 307.4 219.5 312.3 218.6C315.9 217.9 318.4 215.7 321.9 209.7C323.2 207.6 325.6 205.2 327.3 204.3C329.1 203.5 332.6 200.8 335.1 198.5C341.3 192.8 345.8 190.6 356.0 188.5C367.2 186.2 373.8 186.3 383.9 189.0C393.9 191.7 404.0 198.0 412.2 206.7C418.6 213.5 420.0 217.3 419.9 227.0C419.8 234.3 419.1 236.8 413.8 246.1C408.8 254.8 406.2 257.1 400.5 257.7C396.9 258.2 395.6 258.8 394.3 261.0C392.1 264.8 386.2 268.4 376.1 272.1C365.5 275.9 358.7 276.6 344.5 275.0C326.1 273.1 320.9 268.2 317.4 249.4C316.4 243.9 319.5 245.1 327.6 253.4C332.1 258.0 337.0 261.8 340.5 263.5C346.1 266.3 346.1 266.3 359.8 264.7C370.2 263.6 374.8 262.6 379.0 260.6C382.9 258.8 386.2 258.0 390.2 258.0C395.8 258.0 395.8 258.0 397.5 253.5C398.6 250.9 401.2 247.3 404.0 244.6C411.4 237.9 412.1 234.3 407.9 224.4C404.3 216.1 403.3 215.1 386.6 203.9C378.0 198.2 374.7 197.5 360.9 198.7C346.9 199.9 341.5 202.4 333.1 211.2C330.1 214.3 326.5 217.4 324.9 218.0C323.4 218.7 320.3 221.4 318.0 224.1C315.7 226.8 313.1 229.0 312.1 229.0C309.4 229.0 301.4 234.7 294.5 241.5C283.8 251.9 264.6 261.6 251.6 263.1C247.7 263.5 242.6 264.6 240.3 265.4C237.7 266.3 235.8 266.5 235.5 265.9C234.9 265.1 238.9 263.0 241.0 263.0C241.4 263.0 243.8 261.4 246.2 259.3C250.1 256.0 266.9 247.3 272.9 245.5C277.3 244.2 296.6 225.2 297.6 221.2C298.0 219.9 297.5 215.5 296.5 211.3C294.7 203.6 289.5 195.4 285.0 193.0C283.9 192.4 281.6 190.1 280.0 187.9C276.1 182.5 265.2 175.6 254.3 171.8C246.2 168.9 244.6 168.7 233.3 168.8C222.6 168.9 220.3 169.2 215.3 171.4C212.1 172.7 207.8 174.1 205.8 174.5C199.0 175.6 197.5 181.1 200.5 194.0C201.3 197.6 202.4 207.9 202.9 217.0C203.5 226.1 204.7 237.3 205.5 242.0C206.4 246.7 207.5 255.9 207.9 262.5C208.4 269.1 209.4 278.6 210.3 283.5C213.4 301.2 214.2 309.8 214.7 333.6C215.3 360.8 214.6 366.1 207.3 388.8L203.6 400.0L196.8 400.0C190.3 400.0 190.0 399.9 190.0 397.6ZM154.7 292.9C152.1 292.5 147.3 290.8 144.2 289.2C141.1 287.6 136.8 285.7 134.7 285.1C132.7 284.4 128.6 281.6 125.7 278.9C122.9 276.2 120.1 274.0 119.6 274.0C118.9 274.0 111.9 267.4 100.7 256.3C97.0 252.5 90.0 235.5 88.0 225.1C84.7 208.2 85.8 189.5 90.9 178.2C92.5 174.5 94.9 169.0 96.3 166.0C99.4 158.8 108.0 148.6 112.2 147.1C114.0 146.4 118.3 144.5 121.8 142.8C130.1 138.7 137.9 139.1 144.8 144.0C148.0 146.2 151.2 147.5 155.2 148.0C162.0 149.0 164.0 150.3 164.0 153.6C164.0 155.7 163.5 156.0 160.4 156.0C156.1 156.0 153.6 154.8 149.2 150.7C145.6 147.2 140.7 146.7 128.7 148.3C123.4 149.1 122.2 149.8 115.0 156.2C107.5 162.8 107.0 163.5 106.0 168.8C105.4 172.0 104.0 176.8 102.9 179.5C98.9 188.8 98.0 194.2 97.8 208.5C97.6 222.5 97.6 222.5 102.2 232.5C111.6 252.7 113.2 255.2 118.4 258.7C121.1 260.5 125.4 263.9 127.9 266.3C130.4 268.8 134.1 271.6 136.0 272.5C137.9 273.5 141.5 275.8 143.9 277.6C146.3 279.5 150.6 281.7 153.4 282.5C162.2 285.1 171.3 287.2 176.9 288.1C182.8 288.9 184.6 290.1 183.7 292.4C183.0 294.0 163.8 294.4 154.7 292.9ZM516.5 263.1C513.2 261.1 508.3 255.9 500.0 245.5C497.0 241.7 492.2 236.0 489.3 232.9C482.6 225.5 481.9 223.0 485.5 218.8C487.9 216.0 488.1 215.1 487.6 210.6C485.7 194.1 485.8 187.6 487.9 184.2C491.8 178.0 494.7 181.0 497.4 194.2C498.3 198.5 499.0 202.8 499.0 204.0C499.0 208.1 506.1 227.7 509.9 234.3C512.1 238.0 516.2 243.6 518.9 246.7C525.3 253.8 527.3 258.0 526.1 261.3C524.5 265.3 521.1 266.0 516.5 263.1ZM600.0 240.6C593.3 238.9 582.6 232.5 579.1 228.4C572.2 219.9 568.0 208.0 568.0 196.5C568.0 190.5 574.9 171.1 580.2 162.2C584.3 155.4 593.4 147.1 601.8 142.3C608.3 138.7 608.3 138.7 613.5 140.4C617.2 141.5 622.4 142.0 631.8 142.0C643.9 142.0 645.7 142.3 654.2 145.1C664.5 148.6 667.2 150.4 677.6 160.2C683.2 165.6 685.6 168.8 689.3 176.2C694.6 186.6 694.8 188.4 692.0 194.0C690.9 196.2 690.0 199.3 690.0 201.0C690.0 207.7 681.2 218.4 672.0 223.0C669.5 224.3 666.1 226.3 664.5 227.5C662.9 228.7 657.6 231.6 652.8 233.9C639.1 240.5 612.2 243.9 600.0 240.6ZM639.1 226.7C662.0 217.1 666.5 214.5 675.4 205.9C687.4 194.4 687.7 192.0 678.3 182.4C675.1 179.1 670.2 173.6 667.5 170.0C663.4 164.7 660.9 162.7 653.5 158.6C645.3 154.1 643.5 153.6 632.0 151.9C625.1 150.9 618.9 150.0 618.2 150.0C617.5 150.0 614.8 152.0 612.3 154.4C609.4 157.2 606.2 159.2 603.3 160.1C600.0 161.0 597.2 162.9 592.9 167.4C580.3 180.3 576.5 196.4 582.9 209.5C586.8 217.4 595.1 226.7 600.5 229.2C603.9 230.7 606.4 231.0 617.5 230.6C629.7 230.3 631.0 230.1 639.1 226.7ZM459.3 207.6C457.7 206.3 453.7 203.6 450.3 201.6C447.0 199.6 444.0 197.4 443.7 196.5C443.3 195.7 440.9 193.7 438.1 192.0C435.4 190.3 432.1 187.5 430.7 185.6C429.3 183.8 425.6 181.1 422.6 179.6C413.3 175.0 410.2 168.4 415.4 164.2C421.6 159.4 447.6 152.1 475.0 147.5C489.0 145.1 519.7 143.6 523.2 145.1C529.4 147.7 522.1 152.0 511.5 152.0C507.6 152.0 501.0 152.7 496.7 153.5C492.4 154.3 486.5 155.0 483.7 155.0C480.8 155.0 475.6 155.9 472.2 157.0C467.9 158.4 462.9 159.0 456.7 159.1C438.1 159.2 434.4 161.0 432.0 170.9C430.4 177.6 431.3 180.6 435.3 182.6C438.8 184.4 446.8 191.0 453.4 197.6C455.7 199.8 459.1 202.7 461.0 204.0C465.0 206.7 466.1 208.1 465.4 209.2C464.5 210.6 462.2 210.0 459.3 207.6Z"/></svg></span><span class="brand-word" aria-hidden="true"><span>R</span><span>O</span><span>C</span><span>K</span><span>E</span><span>R</span><span>O</span><span>L</span><span>E</span><span>G</span></span></a>
+    <nav>
+      <a class="scrib" href="./#sheet">Контактный лист</a>
+      <a class="scrib" href="series.html" aria-current="page">Серии</a>
+      <a class="scrib" href="about.html">Обо мне</a>
+      <a class="scrib" href="./#contact">Связь</a>
+    </nav>
+  </header>
+  <div class="intro">
+    <h1>Серии</h1>
+    <p>Истории, которые не помещаются в один кадр: эксперименты с плёнкой и полароидом, закулисье, поездки и люди. Тексты — мои, из Instagram</p>
+  </div>
+  <nav class="index" id="index" aria-label="Серии"></nav>
+</section>
+
+<section class="case" id="exoball">
+  <div class="kicker mono">Для организаторов</div>
+  <h2>Один вечер —<br><em>три отчёта<svg viewBox="0 0 500 160" preserveAspectRatio="none" aria-hidden="true"><path d="M30 40C150 0 400 -5 470 40s0 100-80 110-300 10-360-20S-10 70 60 30" fill="none" stroke="#d01818" stroke-width="5" stroke-linecap="round" filter="url(#wobble)"/></svg></em></h2>
+  <p class="lead">EXO BALL, 2025. Одно мероприятие — три разных взгляда: можно выбрать один или взять все</p>
+  <div class="parts" id="parts"></div>
+</section>
+
+<main id="list"></main>
+
+<section class="help" id="pomosch">
+  <div class="meta">
+    <div class="no mono">Дела</div>
+    <h2>«ПОМОЩЬ»</h2>
+    <dl class="mono"><dt>с 2024</dt><dd>дни помощи, приюты, «Герои», Масленица</dd></dl>
+  </div>
+  <div>
+    <blockquote>«Андрей начал заниматься фотографией не по своей воле, и первый опыт был неудачным, но впоследствии он заинтересовался и увлёкся процессом. Сейчас вкладывает всего себя в фотографию и может целый день посвятить одному кадру»<cite class="mono">— проект «ПОМОЩЬ», рубрика «Фотографы ПОМОЩИ»</cite></blockquote>
+    <div id="help-strip"></div>
+  </div>
+</section>
+
+<section class="kit">
+  <div class="label mono">Чем снимаю</div>
+  <ol id="kit"></ol>
+</section>
+<div class="peek" id="peek" aria-hidden="true"><img alt=""></div>
+
+<section class="cta">
+  <div class="big">Снимем<br>вашу серию?</div>
+  <a class="go" href="./#contact">Написать →</a>
+</section>
+<footer class="mono"><span>© 2026 Rockeroleg</span><span>rockeroleg.ru</span></footer>
+
+<div class="loupe" id="loupe" role="dialog" aria-modal="true" aria-label="Кадр крупно">
+  <figure><img id="loupe-img" alt=""><figcaption class="cap mono"><span id="loupe-title"></span><a id="loupe-post" target="_blank" rel="noopener">пост в Instagram →</a></figcaption></figure>
+</div>
+
+<script src="photos/insta/insta.js"></script>
+<script>
+(function () {
+  setTimeout(function () { document.getElementById('brand').classList.remove('live'); }, 2400);
+
+  function full(id) { return 'photos/insta/full/' + id + '.webp'; }
+  function thumb(id) { return 'photos/insta/thumb/' + id + '.webp'; }
+  var byId = {};
+  INSTA.frames.forEach(function (f) { byId[f.id] = f; });
+  var S = INSTA.series;
+
+  // порядок и подписи; камера и место — из подписей к постам
+  // последнее поле — раскладка кадров (layouts ниже)
+  var order = [
+    ['forma', 'тело и движение', 'август 2026', 'tight'],
+    ['veshchi', 'что остаётся', '2026', 'air'],
+    ['sem', 'закулисье спектакля «СЕМЬ»', 'текст от руки поверх кадра', 'prints'],
+    ['kadyy', 'Кадый, Костромская область', 'август 2026', 'book'],
+    ['litso', 'портреты одной съёмки', 'Mamiya RZ67 + Ilford 400', 'grid'],
+    ['novosib', 'город через проектор', 'Саша рассказывает о Новосибирске', 'wall'],
+    ['polaroid', 'спичка, капли, микроволновка', 'Polaroid · okno.school', 'instant'],
+    ['redscale', 'плёнка экспонирована наоборот', 'Leica R3', 'film']
+  ];
+
+  function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  // хэштеги убираем, упоминания приглушаем; подписи из одних эмодзи не показываем
+  function clean(t) {
+    t = esc(t.replace(/#[^\s#]+/g, '').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim());
+    return t.replace(/@[\w.]+/g, '<span class="at">$&</span>');
+  }
+  function hasWords(t) { return /[A-Za-zА-Яа-яЁё]{3,}/.test(t); }
+  function fmtDate(d) {
+    var m = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+    var p = d.split('-'); return +p[2] + ' ' + m[+p[1] - 1] + ' ' + p[0];
+  }
+  function shot(id, cls) {
+    return '<button type="button" data-id="' + id + '"' + (cls ? ' class="' + cls + '"' : '') + ' aria-label="Открыть кадр крупно"><img src="' + thumb(id) + '" alt="" loading="lazy"></button>';
+  }
+  function strip(ids) { return '<div class="row">' + ids.map(function (id) { return shot(id); }).join('') + '</div>'; }
+
+  document.getElementById('index').innerHTML = '<a href="#exoball" class="org">Один вечер — три отчёта</a>' + order.map(function (o, i) {
+    return '<a href="#' + o[0] + '"><span class="n mono">' + ('0' + (i + 1)).slice(-2) + '</span>' + S[o[0]].title + '</a>';
+  }).join('') + '<a href="#pomosch">«ПОМОЩЬ»</a>';
+
+  function shots(ids) { return ids.map(function (id) { return shot(id); }).join(''); }
+  var tilts = [-3, 2, -1.5, 3, -2];
+  var layouts = {
+    film: function (ids) { return '<div class="strip scroller">' + strip(ids) + '</div>'; },
+    tight: function (ids) { return '<div class="tight scroller">' + shots(ids) + '</div>'; },
+    air: function (ids) { return '<div class="air">' + shots(ids) + '</div>'; },
+    grid: function (ids) { return '<div class="grid">' + shots(ids) + '</div>'; },
+    prints: function (ids) { return '<div class="prints">' + shots(ids) + '</div>'; },
+    wall: function (ids) { return '<div class="wall scroller">' + shots(ids) + '</div>'; },
+    instant: function (ids) {
+      return '<div class="instant">' + ids.map(function (id, i) {
+        return '<button type="button" data-id="' + id + '" style="--r:' + tilts[i % tilts.length] + 'deg" aria-label="Открыть кадр крупно"><img src="' + thumb(id) + '" alt="" loading="lazy"></button>';
+      }).join('') + '</div>';
+    }
+  };
+  function textP(p, many) {
+    return '<p class="text">' + (many ? '<span class="d mono">' + fmtDate(p.date) + '</span>' : '') + clean(p.text) + '</p>';
+  }
+
+  document.getElementById('list').innerHTML = order.map(function (o, i) {
+    var s = S[o[0]], many = s.posts.length > 1, body;
+    if (o[3] === 'book') {
+      // книжка: у каждого поста свои кадры, под ними его текст
+      body = '<div class="book">' + s.posts.map(function (p) {
+        return '<div class="page"><div class="pics scroller">' + shots(p.frames) + '</div>' + (hasWords(p.text) ? textP(p, true) : '') + '</div>';
+      }).join('') + '</div>';
+    } else {
+      var ids = s.posts.reduce(function (a, p) { return a.concat(p.frames); }, []);
+      body = layouts[o[3]](ids) + s.posts.filter(function (p) { return hasWords(p.text); }).map(function (p) { return textP(p, many); }).join('');
+    }
+    return '<article class="series" id="' + o[0] + '">' +
+      '<div class="meta"><div class="no mono">Серия ' + ('0' + (i + 1)).slice(-2) + '</div><h2>' + s.title + '</h2>' +
+      '<dl class="mono"><dt>' + o[1] + '</dt><dd>' + o[2] + '</dd></dl></div>' +
+      '<div>' + body + '</div></article>';
+  }).join('');
+
+  // три части EXO BALL: в данных они идут от первой к третьей
+  var heads = [['Часть 1', 'Вайб нулевых на Siemens CX70'], ['Часть 2', 'Классический отчёт со сцены'], ['Часть 3', 'Закулисье']];
+  document.getElementById('parts').innerHTML = S.exoball.posts.map(function (p, i) {
+    var body = p.text.replace(/^[\s\S]*?Часть \d:[^\n]*\n?/, '').trim();
+    return '<div class="part"><div class="pics">' + p.frames.slice(0, 2).map(function (id) { return shot(id); }).join('') + '</div>' +
+      '<h3><span class="mono">' + heads[i][0] + '</span>' + heads[i][1] + '</h3>' +
+      (body ? '<p>' + clean(body) + '</p>' : '') + '</div>';
+  }).join('');
+
+  var helpIds = [];
+  S.pomosch.posts.forEach(function (p) { helpIds = helpIds.concat(p.frames); });
+  document.getElementById('help-strip').innerHTML = layouts.air(helpIds);
+
+  /* ── камеры: к каждой — кадр, снятый ею ── */
+  var kit = [
+    ['Mamiya RZ67', 'средний формат', 'DLHSdb4iAi-_3'],
+    ['Leica R3', '35 мм', 'DMirszrCtQI_9'],
+    ['Pentax 17', 'полукадр', 'DNEQy3ciKz5_4'],
+    ['Zenit-E', 'Байкал', 'C9SqwjECXkD_1'],
+    ['Чайка-2', 'плёнка с плесенью', 'C3fId6UChuo_7'],
+    ['Praktica Nova IB', '35 мм', 'DQbqPoiiC81_1'],
+    ['Polaroid', 'и микроволновка', 'DL3FVjsitH7_1'],
+    ['Siemens CX70', 'телефон нулевых', 'DPi5nVqiHtc_1'],
+    ['Kodak Charmera', 'камера-брелок', 'DaFVjJfCA1__8']
+  ];
+  var kitEl = document.getElementById('kit');
+  kitEl.innerHTML = kit.map(function (k, i) {
+    return '<li data-id="' + k[2] + '"><span class="n mono">' + ('0' + (i + 1)).slice(-2) + '</span>' +
+      '<span class="name">' + k[0] + '</span><span class="note mono">' + k[1] + '</span>' +
+      '<img src="' + thumb(k[2]) + '" alt="" loading="lazy"></li>';
+  }).join('');
+  // превью едет за курсором с лёгкой задержкой и наклоном
+  var peek = document.getElementById('peek'), peekImg = peek.querySelector('img');
+  var px = 0, py = 0, mx = 0, my = 0, running = false;
+  function follow() {
+    px += (mx - px) * .18; py += (my - py) * .18;
+    peek.style.transform = 'translate(' + (px + 28).toFixed(1) + 'px,' + (py - 125).toFixed(1) + 'px) rotate(' + ((mx - px) * .04).toFixed(2) + 'deg)';
+    if (running) requestAnimationFrame(follow);
+  }
+  kitEl.addEventListener('pointerover', function (e) {
+    var li = e.target.closest('li'); if (!li) return;
+    peekImg.src = thumb(li.dataset.id);
+    peek.classList.add('on');
+    if (!running) { running = true; px = mx; py = my; requestAnimationFrame(follow); }
+  });
+  kitEl.addEventListener('pointermove', function (e) { mx = e.clientX; my = e.clientY; });
+  kitEl.addEventListener('pointerleave', function () { peek.classList.remove('on'); running = false; });
+
+  /* ── лупа ── */
+  var loupe = document.getElementById('loupe');
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-id]');
+    if (!b) return;
+    var f = byId[b.dataset.id];
+    document.getElementById('loupe-img').src = full(f.id);
+    document.getElementById('loupe-title').textContent = f.title + ' · ' + fmtDate(f.date);
+    document.getElementById('loupe-post').href = 'https://www.instagram.com/p/' + f.code + '/';
+    loupe.classList.add('open');
+  });
+  loupe.addEventListener('click', function (e) { if (!e.target.closest('a')) loupe.classList.remove('open'); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') loupe.classList.remove('open'); });
+})();
+</script>
+</body>
+</html>
