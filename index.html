@@ -145,9 +145,38 @@ img { display: block; }
 .chosen img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
 .chosen svg { position: absolute; left: -12%; top: -10%; width: 124%; height: 120%; overflow: visible; }
 .contact .note { margin-top: 18px; color: var(--muted); max-width: 420px; }
-.contact .for-org { display: inline-block; margin-top: 14px; color: var(--ink); } /* тихая строка к кейсу EXO BALL в «Сериях» */
 
 .kick { display: block; margin-bottom: 22px; color: var(--red); }
+
+/* ── 2½. что снимаю — тихие строки, как список камер в «Сериях»: наведение показывает кадр из такой съёмки ──
+   цены «от … ₽» — места под цифры Андрея */
+.svc { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 24px 48px; padding: 88px 36px 0; }
+.svc ol { list-style: none; border-bottom: 1px solid #dcdad2; }
+.svc li a { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: baseline; gap: 16px; padding: 16px 0; border-top: 1px solid #dcdad2; transition: color .25s; }
+.svc .n { color: var(--red); }
+.svc .name { font: 500 clamp(22px, 2.6vw, 36px)/1.1 'Archivo', sans-serif; letter-spacing: -.03em; }
+.svc .sub { display: block; margin-top: 6px; font-size: 14px; color: var(--muted); }
+.svc .price { color: var(--muted); white-space: nowrap; }
+.svc ol:hover li a { color: #bcbab2; }
+.svc ol:hover li a:hover { color: var(--ink); }
+.svc ol:hover li a .sub { color: #c9c7bf; }
+.svc ol:hover li a:hover .sub { color: var(--muted); }
+.svc li img { display: none; }
+.clients { grid-column: 2; color: var(--muted); line-height: 1.9; }
+.clients b { font-weight: 400; color: var(--ink); }
+.svc-peek { position: fixed; left: 0; top: 0; z-index: 5; width: 200px; pointer-events: none; opacity: 0; transition: opacity .2s; box-shadow: 0 18px 40px -16px rgba(0,0,0,.45); }
+.svc-peek.on { opacity: 1; }
+.svc-peek img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+@media (hover: none) {
+  .svc li a { grid-template-columns: 32px minmax(0, 1fr) 56px; align-items: center; }
+  .svc li img { display: block; grid-column: 3; grid-row: 1 / span 2; width: 56px; aspect-ratio: 4 / 5; object-fit: cover; }
+  .svc .price { grid-column: 2; }
+  .svc-peek { display: none; }
+}
+@media (max-width: 720px) {
+  .svc { grid-template-columns: minmax(0, 1fr); padding: 64px 16px 0; }
+  .clients { grid-column: auto; }
+}
 
 /* ── 3. связь ── */
 /* заголовок, кадры-референсы, подсказка и ссылки — одной колонкой, ссылки сразу под текстом */
@@ -156,7 +185,9 @@ img { display: block; }
 .contact .big { font: 500 clamp(44px, 7.4vw, 128px)/.95 'Archivo', sans-serif; letter-spacing: -.045em; }
 .contact .big em { font-style: normal; position: relative; }
 .contact .big em svg { position: absolute; left: -8%; top: -18%; width: 116%; height: 136%; overflow: visible; }
-.contact .links { display: flex; flex-wrap: wrap; gap: 12px 36px; font-size: 20px; font-weight: 500; }
+.contact .links { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 36px; font-size: 20px; font-weight: 500; }
+.contact .links .ig { color: var(--muted); } /* писать — в мессенджеры, Instagram — посмотреть */
+.contact .links .where { flex-basis: 100%; color: var(--muted); }
 /* справа — Андрей наводит камеру на посетителя: отпечаток в белой рамке, при появлении — вспышка */
 /* три колонки: текст и ссылки · «ваша плёнка» с отмеченными кадрами · карточка Андрея */
 .contact { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 1fr auto; column-gap: clamp(32px, 5vw, 80px); }
@@ -272,12 +303,20 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
   </div>
 </section>
 
+<section class="svc" id="services">
+  <span class="kick mono">Что снимаю</span>
+  <div>
+    <ol id="svc"></ol>
+  </div>
+  <p class="clients mono">Снимал для: <b>LIBERTY Dance Studio · Elefunk · High Heels Convention · EXO BALL · спектакль «СЕМЬ» · The Sun Line · учебный театр школы-студии МХАТ</b></p>
+</section>
+<div class="svc-peek" id="svc-peek" aria-hidden="true"><img alt=""></div>
+
 <section class="contact" id="contact">
   <div>
     <span class="kick mono">Связь</span>
     <div class="big" id="contact-title"></div>
     <p class="note" id="contact-note"></p>
-    <a class="for-org scrib" href="series.html#exoball">Организаторам: один вечер — три отчёта →</a>
     <div class="refs none" id="refs">
       <span class="refs-head mono" id="refs-head"></span>
       <div class="chosen" id="chosen"></div>
@@ -286,7 +325,8 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
   <div class="links">
     <a class="scrib" id="tg" href="https://t.me/+79060829514" target="_blank" rel="noopener">Telegram</a>
     <a class="scrib" id="wa" href="https://wa.me/79060829514" target="_blank" rel="noopener">WhatsApp</a>
-    <a class="scrib" href="https://www.instagram.com/rockeroleg/" target="_blank" rel="noopener">Instagram</a>
+    <a class="scrib ig" href="https://www.instagram.com/rockeroleg/" target="_blank" rel="noopener">Instagram</a>
+    <span class="where mono">Москва · отвечаю в течение дня</span>
   </div>
   <a class="me" id="me" href="about.html" aria-label="Обо мне: открытка от Андрея">
     <span class="print"><img src="photos/andrey.jpg" alt="Андрей Ивлиев наводит камеру" loading="lazy"></span>
@@ -644,6 +684,42 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
   strips.addEventListener('keydown', function (e) { if (e.key === 'Enter') { var f = e.target.closest('.frame'); if (f) openLoupe(f); } });
   loupe.addEventListener('click', function () { loupe.classList.remove('open'); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') loupe.classList.remove('open'); });
+
+  /* ── что снимаю ── */
+  var svc = [
+    ['Театрам', 'спектакль, закулисье, портреты труппы, афиши', '#contact', ['DW38O6lCMO7_1', 'C9xIt8UiAcG_1', 'DP0vX1vCFIM_1', 'DIi8BKLCVoA_1', 'DeH4WYNEfpe_1', 'DQ6mYsLCHqH_1']],
+    ['Танцевальным студиям', 'отчётные концерты, фестивали, конвенции', '#contact', ['C9XN2W_C1Uv_6', 'DKw7BV_iZTV_3', 'DRC4YNqCLQN_12', 'DKw7BV_iZTV_15', 'C9XN2W_C1Uv_1', 'DKw7BV_iZTV_11']],
+    ['Организаторам', 'один вечер — три отчёта: эксперимент, сцена, закулисье →', 'series.html#exoball', ['DPi5nVqiHtc_1', 'DPltYHpCNgY_3', 'DPs38vSiK68_2']],
+    ['Плёночная фотопрогулка', 'медленно, на плёнку, вне цифрового шума', '#contact', ['DNKvEtBClUw', 'DOmDKomiGIy_1', 'DQbqPoiiC81_1']],
+    ['Портрет', 'в студии и на улице', '#contact', ['DX9mvH_EUNE_3', 'DX9mvH_EUNE_9']]
+  ];
+  var svcEl = document.getElementById('svc');
+  svcEl.innerHTML = svc.map(function (s, i) {
+    return '<li><a href="' + s[2] + '" data-i="' + i + '"><span class="n mono">' + ('0' + (i + 1)).slice(-2) + '</span>' +
+      '<span><span class="name">' + s[0] + '</span><span class="sub">' + s[1] + '</span></span>' +
+      '<span class="price mono">от … ₽</span><img src="' + thumb(s[3][0]) + '" alt="" loading="lazy"></a></li>';
+  }).join('');
+  // как камеры в «Сериях»: кадр едет за курсором; при каждом новом наведении — следующий кадр этой съёмки
+  var sp = document.getElementById('svc-peek'), spImg = sp.querySelector('img'), spAt = {};
+  var spx = 0, spy = 0, smx = 0, smy = 0, spRun = false;
+  function spFollow() {
+    spx += (smx - spx) * .18; spy += (smy - spy) * .18;
+    sp.style.transform = 'translate(' + (spx + 28).toFixed(1) + 'px,' + (spy - 125).toFixed(1) + 'px) rotate(' + ((smx - spx) * .04).toFixed(2) + 'deg)';
+    if (spRun) requestAnimationFrame(spFollow);
+  }
+  var spLast = null;
+  svcEl.addEventListener('pointerover', function (e) {
+    var a = e.target.closest('a[data-i]'); if (!a || a === spLast) return;
+    spLast = a;
+    var list = svc[a.dataset.i][3], i = a.dataset.i;
+    spAt[i] = spAt[i] == null ? 0 : (spAt[i] + 1) % list.length;
+    spImg.src = thumb(list[spAt[i]]);
+    new Image().src = thumb(list[(spAt[i] + 1) % list.length]);
+    sp.classList.add('on');
+    if (!spRun) { spRun = true; spx = smx; spy = smy; requestAnimationFrame(spFollow); }
+  });
+  svcEl.addEventListener('pointermove', function (e) { smx = e.clientX; smy = e.clientY; });
+  svcEl.addEventListener('pointerleave', function () { sp.classList.remove('on'); spRun = false; spLast = null; });
 })();
 </script>
 </body>

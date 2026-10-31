@@ -112,6 +112,7 @@ img { display: block; }
 /* тексты Андрея — книжным шрифтом, чтобы его голос отличался от интерфейса */
 .text { margin-top: 28px; max-width: 620px; font: 400 20px/1.55 'Spectral', Georgia, serif; white-space: pre-line; }
 .text + .text { margin-top: 18px; padding-top: 18px; border-top: 1px solid #dcdad2; }
+.bridge { display: inline-block; margin-top: 22px; font-size: 15px; color: var(--ink); } /* от серии — к услуге на главной */
 .text .at { color: var(--muted); }
 .text .d { display: block; margin-bottom: 6px; color: var(--muted); }
 
@@ -289,6 +290,14 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
     ['polaroid', 'спичка, капли, микроволновка', 'Polaroid · okno.school', 'instant'],
     ['redscale', 'плёнка экспонирована наоборот', 'Leica R3', 'film']
   ];
+  // мостик от истории к услуге: тихая строка в конце серии; личные серии — без мостика
+  var bridge = {
+    forma: 'Снимаю танцевальные студии и фестивали',
+    sem: 'Снимаю закулисье спектаклей',
+    litso: 'Снимаю портреты — в студии и на улице',
+    polaroid: 'Хотите так же, на полароид? Напишите',
+    redscale: 'Плёночная фотопрогулка — медленно, на плёнку'
+  };
 
   function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   // хэштеги убираем, упоминания приглушаем; подписи из одних эмодзи не показываем
@@ -343,7 +352,7 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
     return '<article class="series" id="' + o[0] + '">' +
       '<div class="meta"><div class="no mono">Серия ' + ('0' + (i + 1)).slice(-2) + '</div><h2>' + s.title + '</h2>' +
       '<dl class="mono"><dt>' + o[1] + '</dt><dd>' + o[2] + '</dd></dl></div>' +
-      '<div>' + body + '</div></article>';
+      '<div>' + body + (bridge[o[0]] ? '<a class="bridge scrib" href="./#services">' + bridge[o[0]] + ' →</a>' : '') + '</div></article>';
   }).join('');
 
   // три части EXO BALL: в данных они идут от первой к третьей
