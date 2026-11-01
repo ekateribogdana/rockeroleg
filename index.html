@@ -148,33 +148,36 @@ img { display: block; }
 
 .kick { display: block; margin-bottom: 22px; color: var(--red); }
 
-/* ── 2½. что снимаю — тихие строки, как список камер в «Сериях»: наведение показывает кадр из такой съёмки ──
-   цены «от … ₽» — места под цифры Андрея */
+/* ── 2½. что снимаю — строка = направление: кадры такой съёмки видны сразу (и на телефоне), справа — «обсудить» в WhatsApp
+   с готовым текстом. Цены появятся рядом, когда их пришлёт Андрей */
 .svc { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 24px 48px; padding: 88px 36px 0; }
+.svc > .kick { padding-top: 26px; margin: 0; }
 .svc ol { list-style: none; border-bottom: 1px solid #dcdad2; }
-.svc li a { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: baseline; gap: 16px; padding: 16px 0; border-top: 1px solid #dcdad2; transition: color .25s; }
-.svc .n { color: var(--red); }
-.svc .name { font: 500 clamp(22px, 2.6vw, 36px)/1.1 'Archivo', sans-serif; letter-spacing: -.03em; }
+.svc li { display: grid; grid-template-columns: 44px minmax(0, 1fr) minmax(0, 1fr) auto; align-items: center; gap: 16px; padding: 12px 0; border-top: 1px solid #dcdad2; transition: color .25s; }
+.svc .n { align-self: start; padding-top: 14px; color: var(--red); }
+.svc .name { display: block; font: 500 clamp(20px, 2.1vw, 30px)/1.1 'Archivo', sans-serif; letter-spacing: -.03em; }
 .svc .sub { display: block; margin-top: 6px; font-size: 14px; color: var(--muted); }
-.svc .price { color: var(--muted); white-space: nowrap; }
-.svc ol:hover li a { color: #bcbab2; }
-.svc ol:hover li a:hover { color: var(--ink); }
-.svc ol:hover li a .sub { color: #c9c7bf; }
-.svc ol:hover li a:hover .sub { color: var(--muted); }
-.svc li img { display: none; }
-.clients { grid-column: 2; color: var(--muted); line-height: 1.9; }
+.svc .sub a { color: var(--ink); border-bottom: 1px solid #c9c7bf; transition: border-color .2s; }
+.svc .sub a:hover { border-color: var(--red); }
+.svc .strip { display: grid; grid-template-columns: repeat(4, 64px); gap: 8px; }
+.svc .strip img { width: 64px; aspect-ratio: 4 / 5; object-fit: cover; filter: grayscale(1) contrast(1.05); transition: filter .45s; background: #e6e4dc; }
+.svc li:hover .strip img { filter: none; }
+.svc .ask { white-space: nowrap; font-size: 14px; color: var(--ink); }
+.svc .ask:hover { color: var(--red); }
+.svc ol:hover li { color: #bcbab2; }
+.svc ol:hover li:hover { color: var(--ink); }
+.clients { grid-column: 2; max-width: 980px; font-size: 14px; line-height: 1.8; color: var(--muted); }
 .clients b { font-weight: 400; color: var(--ink); }
-.svc-peek { position: fixed; left: 0; top: 0; z-index: 5; width: 200px; pointer-events: none; opacity: 0; transition: opacity .2s; box-shadow: 0 18px 40px -16px rgba(0,0,0,.45); }
-.svc-peek.on { opacity: 1; }
-.svc-peek img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
-@media (hover: none) {
-  .svc li a { grid-template-columns: 32px minmax(0, 1fr) 56px; align-items: center; }
-  .svc li img { display: block; grid-column: 3; grid-row: 1 / span 2; width: 56px; aspect-ratio: 4 / 5; object-fit: cover; }
-  .svc .price { grid-column: 2; }
-  .svc-peek { display: none; }
-}
+.clients b span { white-space: nowrap; }
+@media (hover: none) { .svc .strip img { filter: none; } }
 @media (max-width: 720px) {
   .svc { grid-template-columns: minmax(0, 1fr); padding: 64px 16px 0; }
+  .svc > .kick { padding-top: 0; }
+  .svc li { grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px 12px; padding: 16px 0; }
+  .svc .n { padding-top: 6px; }
+  .svc .strip { grid-column: 2 / -1; grid-row: 2; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .svc .strip img { width: 100%; }
+  .svc .ask { align-self: start; padding-top: 4px; }
   .clients { grid-column: auto; }
 }
 
@@ -308,9 +311,8 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
   <div>
     <ol id="svc"></ol>
   </div>
-  <p class="clients mono">Снимал для: <b>LIBERTY Dance Studio · Elefunk · High Heels Convention · EXO BALL · спектакль «СЕМЬ» · The Sun Line · учебный театр школы-студии МХАТ</b></p>
+  <p class="clients">Снимал для: <b><span>LIBERTY Dance Studio</span> · <span>Elefunk</span> · <span>High Heels Convention</span> · <span>EXO BALL</span> · <span>спектакль «СЕМЬ»</span> · <span>The Sun Line</span> · <span>учебный театр школы-студии МХАТ</span></b></p>
 </section>
-<div class="svc-peek" id="svc-peek" aria-hidden="true"><img alt=""></div>
 
 <section class="contact" id="contact">
   <div>
@@ -686,40 +688,21 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') loupe.classList.remove('open'); });
 
   /* ── что снимаю ── */
+  // [название, что внутри, тема для сообщения, кадры этой съёмки]
   var svc = [
-    ['Театрам', 'спектакль, закулисье, портреты труппы, афиши', '#contact', ['DW38O6lCMO7_1', 'C9xIt8UiAcG_1', 'DP0vX1vCFIM_1', 'DIi8BKLCVoA_1', 'DeH4WYNEfpe_1', 'DQ6mYsLCHqH_1']],
-    ['Танцевальным студиям', 'отчётные концерты, фестивали, конвенции', '#contact', ['C9XN2W_C1Uv_6', 'DKw7BV_iZTV_3', 'DRC4YNqCLQN_12', 'DKw7BV_iZTV_15', 'C9XN2W_C1Uv_1', 'DKw7BV_iZTV_11']],
-    ['Организаторам', 'один вечер — три отчёта: эксперимент, сцена, закулисье →', 'series.html#exoball', ['DPi5nVqiHtc_1', 'DPltYHpCNgY_3', 'DPs38vSiK68_2']],
-    ['Плёночная фотопрогулка', 'медленно, на плёнку, вне цифрового шума', '#contact', ['DNKvEtBClUw', 'DOmDKomiGIy_1', 'DQbqPoiiC81_1']],
-    ['Портрет', 'в студии и на улице', '#contact', ['DX9mvH_EUNE_3', 'DX9mvH_EUNE_9']]
+    ['Театрам', 'спектакль, закулисье, портреты труппы, афиши', 'спектакль', ['DW38O6lCMO7_1', 'C9xIt8UiAcG_1', 'DP0vX1vCFIM_1', 'DQ6mYsLCHqH_1']],
+    ['Танцевальным студиям', 'отчётные концерты, фестивали, конвенции', 'танцевальный концерт', ['C9XN2W_C1Uv_6', 'DKw7BV_iZTV_3', 'DRC4YNqCLQN_12', 'DKw7BV_iZTV_15']],
+    ['Организаторам', '<a href="series.html#exoball">один вечер — три отчёта</a>: эксперимент, сцена, закулисье', 'мероприятие', ['DPi5nVqiHtc_1', 'DPltYHpCNgY_3', 'DPs38vSiK68_2', 'DIi8BKLCVoA_1']],
+    ['Плёночная фотопрогулка', 'медленно, на плёнку, вне цифрового шума', 'плёночная фотопрогулка', ['DNKvEtBClUw', 'DOmDKomiGIy_1', 'DQbqPoiiC81_1']],
+    ['Портрет', 'в студии и на улице', 'портрет', ['DX9mvH_EUNE_3', 'DX9mvH_EUNE_9', 'DeH4WYNEfpe_1']]
   ];
-  var svcEl = document.getElementById('svc');
-  svcEl.innerHTML = svc.map(function (s, i) {
-    return '<li><a href="' + s[2] + '" data-i="' + i + '"><span class="n mono">' + ('0' + (i + 1)).slice(-2) + '</span>' +
+  document.getElementById('svc').innerHTML = svc.map(function (s, i) {
+    var text = 'Здравствуйте, Андрей! Хочу обсудить съёмку: ' + s[2] + '.';
+    return '<li><span class="n mono">' + ('0' + (i + 1)).slice(-2) + '</span>' +
       '<span><span class="name">' + s[0] + '</span><span class="sub">' + s[1] + '</span></span>' +
-      '<span class="price mono">от … ₽</span><img src="' + thumb(s[3][0]) + '" alt="" loading="lazy"></a></li>';
+      '<span class="strip">' + s[3].map(function (id) { return '<img src="' + thumb(id) + '" alt="" loading="lazy">'; }).join('') + '</span>' +
+      '<a class="ask scrib" href="' + WA + '?text=' + encodeURIComponent(text) + '" target="_blank" rel="noopener">обсудить →</a></li>';
   }).join('');
-  // как камеры в «Сериях»: кадр едет за курсором; при каждом новом наведении — следующий кадр этой съёмки
-  var sp = document.getElementById('svc-peek'), spImg = sp.querySelector('img'), spAt = {};
-  var spx = 0, spy = 0, smx = 0, smy = 0, spRun = false;
-  function spFollow() {
-    spx += (smx - spx) * .18; spy += (smy - spy) * .18;
-    sp.style.transform = 'translate(' + (spx + 28).toFixed(1) + 'px,' + (spy - 125).toFixed(1) + 'px) rotate(' + ((smx - spx) * .04).toFixed(2) + 'deg)';
-    if (spRun) requestAnimationFrame(spFollow);
-  }
-  var spLast = null;
-  svcEl.addEventListener('pointerover', function (e) {
-    var a = e.target.closest('a[data-i]'); if (!a || a === spLast) return;
-    spLast = a;
-    var list = svc[a.dataset.i][3], i = a.dataset.i;
-    spAt[i] = spAt[i] == null ? 0 : (spAt[i] + 1) % list.length;
-    spImg.src = thumb(list[spAt[i]]);
-    new Image().src = thumb(list[(spAt[i] + 1) % list.length]);
-    sp.classList.add('on');
-    if (!spRun) { spRun = true; spx = smx; spy = smy; requestAnimationFrame(spFollow); }
-  });
-  svcEl.addEventListener('pointermove', function (e) { smx = e.clientX; smy = e.clientY; });
-  svcEl.addEventListener('pointerleave', function () { sp.classList.remove('on'); spRun = false; spLast = null; });
 })();
 </script>
 </body>
