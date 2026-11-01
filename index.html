@@ -523,8 +523,8 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
     var a = e.target.closest('a'); if (!a) return;
     e.preventDefault(); current = a.dataset.sec; expanded = false; render();
   });
-  // во «Всех» сначала четыре ряда, остальное — по кнопке; разделы показываются целиком
-  var LIMIT = 48, expanded = false;
+  // во «Всех» сначала четыре ряда (на телефоне — шесть по четыре), остальное — по кнопке; разделы показываются целиком
+  var LIMIT = matchMedia('(max-width: 720px)').matches ? 24 : 48, expanded = false;
   var more = document.getElementById('more');
   more.addEventListener('click', function () { expanded = true; render(); });
 

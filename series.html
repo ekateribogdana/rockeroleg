@@ -115,6 +115,12 @@ img { display: block; }
 .bridge { display: inline-block; margin-top: 22px; font-size: 15px; color: var(--ink); } /* от серии — к услуге на главной */
 .text .at { color: var(--muted); }
 .text .d { display: block; margin-bottom: 6px; color: var(--muted); }
+/* длинное — свёрнуто: читает тот, кому интересно, остальные долистывают до «Снимем вашу серию?» */
+.text.fold { max-height: 11em; overflow: hidden; -webkit-mask-image: linear-gradient(#000 60%, transparent); mask-image: linear-gradient(#000 60%, transparent); }
+.unfold { display: block; margin-top: 14px; padding: 0; border: 0; background: none; cursor: pointer; font: 500 14px 'Onest', sans-serif; color: var(--ink); }
+.unfold:hover { color: var(--red); }
+.book .later[hidden] { display: none; }
+.book .later > .page:first-child { margin-top: 64px; }
 
 /* ── кейс для организаторов: три отчёта ── */
 .case { margin: 88px 36px 0; } /* для организаторов — первым, сразу под списком серий */
@@ -182,7 +188,7 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
   .brand-hand { font-size: 18px; }
   .top { padding: 16px 16px 0; }
   .top nav { gap: 16px; font-size: 13px; }
-  .top nav a:first-child { display: none; } /* как на главной: на телефоне меню в одну строку с логотипом */
+  .top header nav a:first-child { display: none; } /* как на главной: на телефоне меню в одну строку с логотипом */
   .series, .help { padding: 64px 16px 0; }
   .text { font-size: 18px; }
   .prints { grid-template-columns: minmax(0, 1fr); }
@@ -246,7 +252,7 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
     <dl class="mono"><dt>с 2024</dt><dd>дни помощи, приюты, «Герои», Масленица</dd></dl>
   </div>
   <div>
-    <blockquote>«Андрей начал заниматься фотографией не по своей воле, и первый опыт был неудачным, но впоследствии он заинтересовался и увлёкся процессом. Сейчас вкладывает всего себя в фотографию и может целый день посвятить одному кадру»<cite class="mono">— проект «ПОМОЩЬ», рубрика «Фотографы ПОМОЩИ»</cite></blockquote>
+    <blockquote>«Андрей вкладывает всего себя в фотографию и может целый день посвятить одному кадру»<cite class="mono">— проект «ПОМОЩЬ», рубрика «Фотографы ПОМОЩИ»</cite></blockquote>
     <div id="help-strip"></div>
   </div>
 </section>
@@ -334,17 +340,24 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
       }).join('') + '</div>';
     }
   };
+  // длинный текст (стихотворение «Формы», «Лицо как узор») сворачиваем до первых строк
   function textP(p, many) {
-    return '<p class="text">' + (many ? '<span class="d mono">' + fmtDate(p.date) + '</span>' : '') + clean(p.text) + '</p>';
+    var t = clean(p.text), long = t.split('\n').length > 12 || t.length > 700;
+    return '<p class="text' + (long ? ' fold' : '') + '">' + (many ? '<span class="d mono">' + fmtDate(p.date) + '</span>' : '') + t + '</p>' +
+      (long ? '<button type="button" class="unfold scrib" data-open="text">Читать целиком ↓</button>' : '');
   }
 
   document.getElementById('list').innerHTML = order.map(function (o, i) {
     var s = S[o[0]], many = s.posts.length > 1, body;
     if (o[3] === 'book') {
       // книжка: у каждого поста свои кадры, под ними его текст
-      body = '<div class="book">' + s.posts.map(function (p) {
+      body = s.posts.map(function (p) {
         return '<div class="page"><div class="pics scroller">' + shots(p.frames) + '</div>' + (hasWords(p.text) ? textP(p, true) : '') + '</div>';
-      }).join('') + '</div>';
+      });
+      // первые две записи видны, остальные — по кнопке
+      var rest = body.length - 2;
+      body = '<div class="book">' + body.slice(0, 2).join('') + (rest > 0 ? '<div class="later" hidden>' + body.slice(2).join('') + '</div>' +
+        '<button type="button" class="unfold scrib" data-open="later">Ещё ' + rest + ' ' + (rest === 1 ? 'запись' : rest < 5 ? 'записи' : 'записей') + ' ↓</button>' : '') + '</div>';
     } else {
       var ids = s.posts.reduce(function (a, p) { return a.concat(p.frames); }, []);
       body = layouts[o[3]](ids) + s.posts.filter(function (p) { return hasWords(p.text); }).map(function (p) { return textP(p, many); }).join('');
@@ -363,6 +376,13 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
       '<h3><span class="mono">' + heads[i][0] + '</span>' + heads[i][1] + '</h3>' +
       (body ? '<p>' + clean(body) + '</p>' : '') + '</div>';
   }).join('');
+
+  document.getElementById('list').addEventListener('click', function (e) {
+    var b = e.target.closest('.unfold'); if (!b) return;
+    if (b.dataset.open === 'later') b.previousElementSibling.hidden = false;
+    else b.previousElementSibling.classList.remove('fold');
+    b.remove();
+  });
 
   var helpIds = [];
   S.pomosch.posts.forEach(function (p) { helpIds = helpIds.concat(p.frames); });
