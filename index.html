@@ -164,6 +164,11 @@ img { display: block; }
 .svc .sub { display: block; margin-top: 6px; font-size: 14px; color: var(--muted); }
 .svc .sub a { color: var(--ink); border-bottom: 1px solid #c9c7bf; transition: border-color .2s; }
 .svc .sub a:hover { border-color: var(--red); }
+/* у организаторов — готовый пример: метка-штамп «кейс», подчёркнуто только название */
+.svc .sub a.case { border: 0; margin-right: 6px; }
+.svc .sub .case .u { border-bottom: 1px solid #c9c7bf; transition: border-color .2s; }
+.svc .sub .case:hover .u { border-color: var(--red); }
+.svc .sub .tag { display: inline-block; margin-right: 8px; padding: 1px 5px 0; border: 1px solid var(--red); border-radius: 3px; color: var(--red); font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; vertical-align: 1px; }
 .svc li > img { display: none; }
 /* «обсудить» — только у выбранной строки, а не пять одинаковых подряд; кликается вся строка */
 .svc .ask { white-space: nowrap; font-size: 14px; color: var(--ink); opacity: 0; transform: translateX(-6px); transition: opacity .25s ease, transform .25s ease; }
@@ -702,7 +707,7 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
   var svc = [
     ['Театрам', 'спектакль, закулисье, портреты труппы, афиши', 'спектакль', ['DIi8BKLCVoA_1', 'DW38O6lCMO7_1', 'DeH4WYNEfpe_1', 'C9xIt8UiAcG_1'], 'DeH4WYNEfpe_1'],
     ['Танцевальным студиям', 'отчётные концерты, фестивали, конвенции', 'танцевальный концерт', ['DRC4YNqCLQN_12', 'C9XN2W_C1Uv_6', 'DKw7BV_iZTV_11', 'DKw7BV_iZTV_15']],
-    ['Организаторам', '<a href="series.html#exoball">один вечер — три отчёта</a>: эксперимент, сцена, закулисье', 'мероприятие', ['DPltYHpCNgY_3', 'DPs38vSiK68_2', 'DPi5nVqiHtc_1']],
+    ['Организаторам', '<a class="case" href="series.html#exoball"><span class="tag mono">кейс</span><span class="u">один вечер — три отчёта</span> →</a> эксперимент, сцена, закулисье', 'мероприятие', ['DPltYHpCNgY_3', 'DPs38vSiK68_2', 'DPi5nVqiHtc_1']],
     ['Плёночная фотопрогулка', 'медленно, на плёнку, вне цифрового шума', 'плёночная фотопрогулка', ['DOmDKomiGIy_1', 'DQbqPoiiC81_1']],
     ['Портрет', 'в студии и на улице', 'портрет', ['DX9mvH_EUNE_9', 'DX9mvH_EUNE_3']]
   ];
