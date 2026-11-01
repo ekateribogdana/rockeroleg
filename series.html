@@ -148,11 +148,12 @@ img { display: block; }
 /* камеры — строки как в журнале съёмки; наведение показывает кадр, снятый этой камерой */
 .kit { margin: 128px 36px 0; display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 24px 48px; }
 .kit .label { color: var(--muted); }
-.kit ol { list-style: none; border-bottom: 1px solid #dcdad2; }
-.kit li { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: baseline; gap: 16px; padding: 14px 0; border-top: 1px solid #dcdad2; cursor: default; transition: color .25s; }
+/* опись снаряжения: тихо и плотно, три колонки — деталь для тех, кто разбирается, а не ещё один крупный список */
+.kit ol { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 32px; }
+.kit li { display: grid; grid-template-columns: 28px minmax(0, 1fr); align-items: baseline; column-gap: 8px; padding: 12px 0 14px; border-top: 1px solid #dcdad2; cursor: default; transition: color .25s; }
 .kit .n { color: var(--red); }
-.kit .name { font-size: clamp(22px, 2.6vw, 36px); font-weight: 500; letter-spacing: -.03em; line-height: 1.1; }
-.kit .note { color: var(--muted); text-align: right; }
+.kit .name { font-size: 19px; font-weight: 500; letter-spacing: -.02em; line-height: 1.2; }
+.kit .note { grid-column: 2; margin-top: 3px; color: var(--muted); }
 .kit li img { display: none; }
 .kit ol:hover li { color: #bcbab2; }
 .kit ol:hover li:hover { color: var(--ink); }
@@ -160,9 +161,8 @@ img { display: block; }
 .peek.on { opacity: 1; }
 .peek img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
 @media (hover: none) {
-  .kit li { grid-template-columns: 32px minmax(0, 1fr) 56px; align-items: center; }
-  .kit li img { display: block; width: 56px; aspect-ratio: 4 / 5; object-fit: cover; }
-  .kit .note { grid-column: 2; grid-row: 2; text-align: left; margin-top: -10px; }
+  .kit li { grid-template-columns: 28px minmax(0, 1fr) 40px; align-items: center; }
+  .kit li img { display: block; grid-column: 3; grid-row: 1 / span 2; width: 40px; aspect-ratio: 4 / 5; object-fit: cover; }
   .peek { display: none; }
 }
 .cta { margin: 96px 36px 0; padding: 72px 0; border-top: 1px solid #dcdad2; display: flex; justify-content: space-between; align-items: end; flex-wrap: wrap; gap: 24px; }
@@ -195,6 +195,8 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
   .air { gap: 20px 16px; }
   .case { margin: 64px 16px 0; }
   .kit, .cta { margin-left: 16px; margin-right: 16px; }
+  .kit ol { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 16px; }
+  .kit .name { font-size: 16px; }
   footer { padding: 0 16px 24px; }
 }
 @media (prefers-reduced-motion: reduce) {

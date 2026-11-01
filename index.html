@@ -148,36 +148,45 @@ img { display: block; }
 
 .kick { display: block; margin-bottom: 22px; color: var(--red); }
 
-/* ── 2½. что снимаю — противоположность листу: там много мелких кадров, здесь один крупный.
-   Наведение на строку меняет кадр (повторное — следующий кадр этой съёмки); «обсудить» — WhatsApp с готовым текстом.
-   Цены появятся рядом, когда их пришлёт Андрей */
-.svc { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 0 56px; align-items: start; padding: 88px 36px 0; }
-.svc-fig { position: sticky; top: 24px; margin: 0; }
-.svc-fig .pic { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: #e6e4dc; }
-.svc-fig img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .5s ease, transform 1.2s ease; transform: scale(1.03); }
-.svc-fig img.on { opacity: 1; transform: none; }
-.svc-fig figcaption { margin-top: 10px; color: var(--muted); }
-.svc ol { list-style: none; border-bottom: 1px solid #dcdad2; }
-.svc li { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: baseline; gap: 16px; padding: 18px 0; border-top: 1px solid #dcdad2; cursor: default; transition: color .25s; }
-.svc .n { color: var(--red); }
-.svc .name { display: block; font: 500 clamp(22px, 2.6vw, 36px)/1.1 'Archivo', sans-serif; letter-spacing: -.03em; }
-.svc .sub { display: block; margin-top: 6px; font-size: 14px; color: var(--muted); }
-.svc .sub a { color: var(--ink); border-bottom: 1px solid #c9c7bf; transition: border-color .2s; }
-.svc .sub a:hover { border-color: var(--red); }
-.svc li > img { display: none; }
-.svc .ask { white-space: nowrap; font-size: 14px; color: var(--ink); }
-.svc .ask:hover { color: var(--red); }
-.svc li { color: #bcbab2; }
-.svc li.on { color: var(--ink); }
-.clients { margin-top: 24px; font-size: 14px; line-height: 1.8; color: var(--muted); }
+/* ── 2½. что снимаю — конверты из фотолаборатории: на каждом надпись маркером, внутри отпечаток.
+   Отпечаток чуть выглядывает; при наведении выезжает, при следующем — уже другой кадр этой съёмки.
+   «обсудить» — WhatsApp с готовым текстом. Цены впишем в конверт, когда их пришлёт Андрей */
+.svc { padding: 88px 36px 0; }
+.svc .kick { margin-bottom: 0; }
+.envs { list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 28px; }
+.env { position: relative; padding-top: 62%; transform: rotate(var(--r, 0deg)); }
+.env .slot { position: absolute; left: 0; right: 0; bottom: 0; aspect-ratio: 1 / 1.04; z-index: 1; }
+.env .print { position: absolute; left: 9%; top: 9%; width: 82%; padding: 5px; background: #fff; box-shadow: 0 6px 16px -8px rgba(0,0,0,.4); transform: translateY(-20%) rotate(-1.5deg); transition: transform .6s cubic-bezier(.3,.8,.25,1); }
+.env .print img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: #e6e4dc; }
+.env:hover .print, .env.open .print { transform: translateY(-64%) rotate(1deg); }
+/* сам конверт: крафт, сверху вырез под палец, как у конвертов для негативов */
+.env .front { position: relative; z-index: 2; aspect-ratio: 1 / 1.04; display: flex; flex-direction: column; padding: 30px 16px 16px; color: #2a2520;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='k'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .27 0 0 0 0 .16 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23k)'/%3E%3C/svg%3E"), #d3bc93;
+  -webkit-mask: radial-gradient(circle 20px at 50% 0, transparent 19px, #000 20px); mask: radial-gradient(circle 20px at 50% 0, transparent 19px, #000 20px); }
+.env .head { display: flex; justify-content: space-between; font: 400 9px 'PT Mono', monospace; letter-spacing: .14em; text-transform: uppercase; color: #6d5d45; border-bottom: 1px solid #a8916c; padding-bottom: 6px; }
+.env .hand { margin: 10px 0 6px; font: 500 clamp(30px, 2.8vw, 42px)/1 'Caveat', cursive; transform: rotate(-3deg); transform-origin: left; color: #1d1a17; }
+.env dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 8px; font-size: 12.5px; line-height: 1.35; }
+.env dt { font: 400 9px/1.9 'PT Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #6d5d45; }
+.env dd { border-bottom: 1px dotted #a8916c; padding-bottom: 3px; }
+.env dd a { border-bottom: 1px solid currentColor; }
+.env dd a:hover { color: var(--red); }
+.env .ask { margin-top: auto; align-self: flex-start; font-size: 14px; font-weight: 500; }
+.env .ask:hover { color: var(--red); }
+/* штамп лаборатории — только на конверте организаторов: там кейс */
+.env .stamp { position: absolute; right: 10px; bottom: 14px; padding: 3px 7px; border: 1.5px solid var(--red); border-radius: 3px; color: var(--red); font: 400 9px 'PT Mono', monospace; letter-spacing: .12em; text-transform: uppercase; transform: rotate(-8deg); opacity: .85; }
+.env .stamp:hover { opacity: 1; }
+.clients { margin-top: 40px; max-width: 980px; font-size: 14px; line-height: 1.8; color: var(--muted); }
 .clients b { font-weight: 400; color: var(--ink); }
 .clients b span { white-space: nowrap; }
-/* на телефоне большой кадр не помещается рядом — у каждой строки свой широкий кадр */
+/* на тач-экранах наведения нет: отпечаток выглядывает сильнее, тап — выезжает */
+@media (hover: none) { .env .print { transform: translateY(-34%) rotate(-1.5deg); } }
+@media (max-width: 1100px) and (min-width: 721px) { .envs { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 8px; } }
 @media (max-width: 720px) {
-  .svc { grid-template-columns: minmax(0, 1fr); padding: 64px 16px 0; }
-  .svc-fig { display: none; }
-  .svc li { grid-template-columns: 28px minmax(0, 1fr) auto; gap: 12px; padding: 16px 0 20px; color: var(--ink); }
-  .svc li > img { display: block; grid-column: 1 / -1; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 30%; margin-top: 4px; }
+  .svc { padding: 64px 0 0; }
+  .svc .kick, .clients { margin-left: 16px; margin-right: 16px; }
+  .envs { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 64vw; gap: 18px; overflow-x: auto; padding: 0 16px 12px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .envs::-webkit-scrollbar { display: none; }
+  .env { scroll-snap-align: center; padding-top: 44%; }
 }
 
 /* ── 3. связь ── */
@@ -312,12 +321,9 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
 </section>
 
 <section class="svc" id="services">
-  <figure class="svc-fig" id="svc-fig" aria-hidden="true"><div class="pic"><img alt=""><img alt=""></div><figcaption class="mono"></figcaption></figure>
-  <div>
-    <span class="kick mono">Что снимаю</span>
-    <ol id="svc"></ol>
-    <p class="clients">Снимал для: <b><span>LIBERTY Dance Studio</span> · <span>Elefunk</span> · <span>High Heels Convention</span> · <span>EXO BALL</span> · <span>спектакль «СЕМЬ»</span> · <span>The Sun Line</span> · <span>учебный театр школы-студии МХАТ</span></b></p>
-  </div>
+  <span class="kick mono">Что снимаю</span>
+  <ul class="envs" id="svc"></ul>
+  <p class="clients">Снимал для: <b><span>LIBERTY Dance Studio</span> · <span>Elefunk</span> · <span>High Heels Convention</span> · <span>EXO BALL</span> · <span>спектакль «СЕМЬ»</span> · <span>The Sun Line</span> · <span>учебный театр школы-студии МХАТ</span></b></p>
 </section>
 
 <section class="contact" id="contact">
@@ -693,45 +699,44 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
   loupe.addEventListener('click', function () { loupe.classList.remove('open'); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') loupe.classList.remove('open'); });
 
-  /* ── что снимаю ── */
-  // [название, что внутри, тема для сообщения, кадры этой съёмки — первый показывается сразу, кадр для телефона, если первый не режется в ширину]
+  /* ── что снимаю: конверты ── */
+  // [надпись маркером, кому, что внутри, тема для сообщения, кадры этой съёмки]
   var svc = [
-    ['Театрам', 'спектакль, закулисье, портреты труппы, афиши', 'спектакль', ['DIi8BKLCVoA_1', 'DW38O6lCMO7_1', 'DeH4WYNEfpe_1', 'C9xIt8UiAcG_1'], 'DeH4WYNEfpe_1'],
-    ['Танцевальным студиям', 'отчётные концерты, фестивали, конвенции', 'танцевальный концерт', ['DRC4YNqCLQN_12', 'C9XN2W_C1Uv_6', 'DKw7BV_iZTV_11', 'DKw7BV_iZTV_15']],
-    ['Организаторам', '<a href="series.html#exoball">один вечер — три отчёта</a>: эксперимент, сцена, закулисье', 'мероприятие', ['DPltYHpCNgY_3', 'DPs38vSiK68_2', 'DPi5nVqiHtc_1']],
-    ['Плёночная фотопрогулка', 'медленно, на плёнку, вне цифрового шума', 'плёночная фотопрогулка', ['DOmDKomiGIy_1', 'DQbqPoiiC81_1']],
-    ['Портрет', 'в студии и на улице', 'портрет', ['DX9mvH_EUNE_9', 'DX9mvH_EUNE_3']]
+    ['Театр', 'театрам', 'спектакль, закулисье, портреты труппы, афиши', 'спектакль', ['DIi8BKLCVoA_1', 'DW38O6lCMO7_1', 'DeH4WYNEfpe_1', 'C9xIt8UiAcG_1']],
+    ['Танец', 'танцевальным студиям', 'отчётные концерты, фестивали, конвенции', 'танцевальный концерт', ['DRC4YNqCLQN_12', 'C9XN2W_C1Uv_6', 'DKw7BV_iZTV_11', 'DKw7BV_iZTV_15']],
+    ['Событие', 'организаторам', 'эксперимент, сцена, закулисье — <a href="series.html#exoball">три отчёта</a>', 'мероприятие', ['DPltYHpCNgY_3', 'DPs38vSiK68_2', 'DPi5nVqiHtc_1']],
+    ['Плёнка', 'тем, кто любит плёнку', 'фотопрогулка — медленно, вне цифрового шума', 'плёночная фотопрогулка', ['DOmDKomiGIy_1', 'DQbqPoiiC81_1']],
+    ['Портрет', 'вам', 'в студии и на улице', 'портрет', ['DX9mvH_EUNE_9', 'DX9mvH_EUNE_3']]
   ];
+  var tilt = [-1.2, .8, -.5, 1.1, -.9];
   var svcEl = document.getElementById('svc');
   svcEl.innerHTML = svc.map(function (s, i) {
-    var text = 'Здравствуйте, Андрей! Хочу обсудить съёмку: ' + s[2] + '.';
-    return '<li data-i="' + i + '"><span class="n mono">' + ('0' + (i + 1)).slice(-2) + '</span>' +
-      '<span><span class="name">' + s[0] + '</span><span class="sub">' + s[1] + '</span></span>' +
+    var text = 'Здравствуйте, Андрей! Хочу обсудить съёмку: ' + s[3] + '.';
+    return '<li class="env" data-i="' + i + '" style="--r:' + tilt[i] + 'deg">' +
+      '<div class="slot"><div class="print"><img src="' + thumb(s[4][0]) + '" alt="" loading="lazy"></div></div>' +
+      '<div class="front"><div class="head"><span>№ 0' + (i + 1) + '</span><span>Rockeroleg · лаб.</span></div>' +
+      '<div class="hand">' + s[0] + '</div>' +
+      '<dl><dt>кому</dt><dd>' + s[1] + '</dd><dt>внутри</dt><dd>' + s[2] + '</dd></dl>' +
       '<a class="ask scrib" href="' + WA + '?text=' + encodeURIComponent(text) + '" target="_blank" rel="noopener">обсудить →</a>' +
-      '<img src="' + full(s[4] || s[3][0]) + '" alt="" loading="lazy"></li>';
+      (i === 2 ? '<a class="stamp" href="series.html#exoball">кейс EXO BALL</a>' : '') + '</div></li>';
   }).join('');
-  // большой кадр: два слоя, новый проявляется поверх старого
-  var fig = document.getElementById('svc-fig'), figImgs = fig.querySelectorAll('img'), figCap = fig.querySelector('figcaption');
-  var rows = svcEl.querySelectorAll('li'), svcAt = svc.map(function () { return 0; }), svcCur = -1, layer = 0;
-  function svcShow(i) {
-    if (i === svcCur) svcAt[i] = (svcAt[i] + 1) % svc[i][3].length; // снова на ту же строку — следующий кадр
-    svcCur = i;
-    var next = figImgs[layer = 1 - layer];
-    next.src = full(svc[i][3][svcAt[i]]);
-    next.classList.add('on'); figImgs[1 - layer].classList.remove('on');
-    figCap.textContent = ('0' + (i + 1)).slice(-2) + ' · ' + svc[i][0];
-    rows.forEach(function (r, k) { r.classList.toggle('on', k === i); });
-    new Image().src = full(svc[i][3][(svcAt[i] + 1) % svc[i][3].length]);
+  // отпечаток уехал обратно в конверт — подкладываем следующий кадр этой съёмки
+  var svcAt = svc.map(function () { return 0; });
+  function nextPrint(env) {
+    var i = +env.dataset.i, list = svc[i][4];
+    svcAt[i] = (svcAt[i] + 1) % list.length;
+    setTimeout(function () { env.querySelector('.print img').src = thumb(list[svcAt[i]]); }, 450);
+    new Image().src = thumb(list[(svcAt[i] + 1) % list.length]);
   }
-  svcShow(0);
-  var svcLast = null;
-  svcEl.addEventListener('pointerover', function (e) {
-    var li = e.target.closest('li'); if (!li || li === svcLast) return;
-    svcLast = li; svcShow(+li.dataset.i);
+  svcEl.querySelectorAll('.env').forEach(function (env) {
+    env.addEventListener('mouseleave', function () { nextPrint(env); });
+    // на телефоне: тап по конверту — отпечаток выезжает, второй тап — убирается и меняется
+    env.addEventListener('click', function (e) {
+      if (e.target.closest('a') || matchMedia('(hover: hover)').matches) return;
+      if (env.classList.toggle('open')) return;
+      nextPrint(env);
+    });
   });
-  svcEl.addEventListener('pointerleave', function () { svcLast = null; });
-  // первые кадры подгружаем заранее, чтобы при наведении не было пустоты
-  addEventListener('load', function () { svc.forEach(function (s) { new Image().src = full(s[3][0]); }); });
 })();
 </script>
 </body>
