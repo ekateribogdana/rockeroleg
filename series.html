@@ -26,10 +26,14 @@ img { display: block; }
 .brand { position: relative; display: inline-block; white-space: nowrap; }
 .brand-word { display: inline-block; font: 500 28px/1 'Archivo', sans-serif; letter-spacing: -.035em; color: var(--ink); }
 .brand-word span { display: inline-block; }
-/* логотип — только имя строчными; красная точка — огонёк записи, при наведении мигает */
-.brand-word .dot { width: .2em; height: .2em; margin-left: .07em; border-radius: 50%; background: #e01e1e; }
-.brand:hover .brand-word .dot { animation: rec 1s steps(1) infinite; }
-@keyframes rec { 50% { opacity: 0; } }
+/* логотип — имя строчными; «oleg» отмечен красным штрихом маркером, как кадр на контактном листе; при наведении штрих дорисовывается заново */
+.brand-word .mark { position: relative; }
+.brand-word .mark::after {
+  content: ''; position: absolute; left: -.04em; right: -.06em; bottom: -.16em; height: .16em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M3 6c18-3 40 2 62-1s24 1 32-2' stroke='%23e01e1e' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") center/100% 100% no-repeat;
+}
+.brand:hover .brand-word .mark::after { animation: redraw .45s ease-out; }
+@keyframes redraw { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 .scrib { position: relative; }
 .scrib::after {
   content: ''; position: absolute; left: -4px; right: -4px; bottom: -7px; height: 9px;
@@ -198,7 +202,7 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
   footer { padding: 0 16px 24px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .brand-word span { animation: none !important; }
+  .brand-word span, .brand-word .mark::after { animation: none !important; }
   html { scroll-behavior: auto; }
 }
 </style>
@@ -221,7 +225,7 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
 
 <section class="top">
   <header>
-    <a class="brand live" id="brand" href="./" aria-label="Rockeroleg, фото — на главную"><span class="brand-word" aria-hidden="true"><span>r</span><span>o</span><span>c</span><span>k</span><span>e</span><span>r</span><span>o</span><span>l</span><span>e</span><span>g</span><span class="dot"></span></span></a>
+    <a class="brand live" id="brand" href="./" aria-label="Rockeroleg, фото — на главную"><span class="brand-word" aria-hidden="true"><span>r</span><span>o</span><span>c</span><span>k</span><span>e</span><span>r</span><span class="mark"><span>o</span><span>l</span><span>e</span><span>g</span></span></span></a>
     <nav>
       <a class="scrib" href="./#sheet">Контактный лист</a>
       <a class="scrib" href="series.html" aria-current="page">Серии</a>
