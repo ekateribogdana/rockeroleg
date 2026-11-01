@@ -151,15 +151,17 @@ img { display: block; }
 /* ── 2½. что снимаю — тихо: пять колонок текста с тонкими линиями, как опись камер в «Сериях».
    Не спорит с листом сверху и открыткой снизу: кадр появляется только при наведении — отпечаток выглядывает над колонкой,
    в следующий раз уже другой кадр этой съёмки. «обсудить» — WhatsApp с готовым текстом. Цены — строкой в колонке, когда пришлёт Андрей */
-.svc { padding: 88px 36px 0; }
+.svc { padding: 88px 36px 64px; } /* воздух до «Связи»: внизу не должно быть сплошной стены текста */
 .envs { list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); column-gap: 28px; }
-.env { position: relative; display: flex; flex-direction: column; padding: 14px 0 0; border-top: 1px solid #dcdad2; }
+.env { position: relative; display: flex; flex-direction: column; padding: 14px 0 0; border-top: 1px solid #dcdad2; cursor: pointer; }
 .env .n { color: var(--red); }
 .env .name { display: block; margin-top: 10px; font: 500 clamp(18px, 1.6vw, 22px)/1.15 'Archivo', sans-serif; letter-spacing: -.02em; }
 .env .sub { display: block; margin-top: 6px; font-size: 13px; line-height: 1.45; color: var(--muted); }
 .env .sub a { color: var(--ink); border-bottom: 1px solid #c9c7bf; }
 .env .sub a:hover { border-color: var(--red); }
-.env .ask { margin-top: auto; padding-top: 14px; align-self: flex-start; font-size: 14px; font-weight: 500; }
+/* «обсудить» — только у выбранной колонки, а не пять одинаковых подряд; кликается вся колонка */
+.env .ask { margin-top: auto; padding-top: 14px; align-self: flex-start; font-size: 14px; font-weight: 500; opacity: 0; transform: translateX(-6px); transition: opacity .25s ease, transform .25s ease; }
+.env:hover .ask, .env .ask:focus-visible { opacity: 1; transform: none; }
 .env .ask:hover { color: var(--red); }
 .envs:hover .env { color: #bcbab2; }
 .envs:hover .env:hover { color: var(--ink); }
@@ -170,7 +172,7 @@ img { display: block; }
 .clients { margin-top: 44px; max-width: 980px; font-size: 14px; line-height: 1.8; color: var(--muted); }
 .clients b { font-weight: 400; color: var(--ink); }
 .clients b span { white-space: nowrap; }
-@media (hover: none) { .env .print { display: none; } .envs:hover .env { color: inherit; } }
+@media (hover: none) { .env .print { display: none; } .envs:hover .env { color: inherit; } .env .ask { opacity: 1; transform: none; } }
 @media (max-width: 1100px) and (min-width: 721px) { .envs { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 28px; } }
 /* на телефоне — строки одна под другой */
 @media (max-width: 720px) {
@@ -179,7 +181,8 @@ img { display: block; }
   .env { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; column-gap: 10px; align-items: baseline; padding: 14px 0 16px; }
   .env .name { margin-top: 0; grid-column: 2; }
   .env .sub { grid-column: 2; }
-  .env .ask { grid-column: 3; grid-row: 1; padding-top: 0; }
+  .env .ask { grid-column: 3; grid-row: 1; padding-top: 0; color: var(--red); opacity: 1; transform: none; }
+  .env .ask .w { display: none; } /* на телефоне — только стрелка */
 }
 
 /* ── 3. связь ── */
@@ -707,11 +710,16 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
     return '<li class="env" data-i="' + i + '"><span class="n mono">0' + (i + 1) + '</span>' +
       '<div class="print" aria-hidden="true"><img src="' + thumb(s[3][0]) + '" alt="" loading="lazy"></div>' +
       '<span class="name">' + s[0] + '</span><span class="sub">' + s[1] + '</span>' +
-      '<a class="ask scrib" href="' + WA + '?text=' + encodeURIComponent(text) + '" target="_blank" rel="noopener">обсудить →</a></li>';
+      '<a class="ask scrib" href="' + WA + '?text=' + encodeURIComponent(text) + '" target="_blank" rel="noopener"><span class="w">обсудить </span>→</a></li>';
   }).join('');
   // отпечаток спрятался — в следующий раз выглянет другой кадр этой съёмки
   var svcAt = svc.map(function () { return 0; });
   svcEl.querySelectorAll('.env').forEach(function (env) {
+    // вся колонка ведёт в WhatsApp; ссылка на кейс внутри — сама по себе
+    env.addEventListener('click', function (e) {
+      if (e.target.closest('a')) return;
+      window.open(env.querySelector('.ask').href, '_blank', 'noopener');
+    });
     env.addEventListener('mouseleave', function () {
       var i = +env.dataset.i, list = svc[i][3];
       svcAt[i] = (svcAt[i] + 1) % list.length;
