@@ -148,40 +148,38 @@ img { display: block; }
 
 .kick { display: block; margin-bottom: 22px; color: var(--red); }
 
-/* ── 2½. что снимаю — отпечаток наполовину вынут из пергаминового кармашка: кадр резкий и виден почти целиком,
-   на матовой части кармашка — название и что входит. При наведении отпечаток выезжает чуть выше,
-   а в следующий раз в кармашке уже другой кадр этой съёмки. Цены — строкой на кармашке, когда пришлёт Андрей */
+/* ── 2½. что снимаю — тихо: пять колонок текста с тонкими линиями, как опись камер в «Сериях».
+   Не спорит с листом сверху и открыткой снизу: кадр появляется только при наведении — отпечаток выглядывает над колонкой,
+   в следующий раз уже другой кадр этой съёмки. «обсудить» — WhatsApp с готовым текстом. Цены — строкой в колонке, когда пришлёт Андрей */
 .svc { padding: 88px 36px 0; }
-.envs { list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px; padding-top: 14px; }
-.env { position: relative; display: flex; flex-direction: column; transform: rotate(var(--r, 0deg)); }
-.env .print { position: relative; z-index: 1; padding: 6px; background: #fff; box-shadow: 0 8px 20px -12px rgba(0,0,0,.4); transition: transform .5s cubic-bezier(.3,.8,.25,1); }
-.env .print img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: #e6e4dc; }
-.env:hover .print, .env.open .print { transform: translateY(-14px) rotate(-.8deg); }
-/* кармашек: молочный пергамин с мелким зерном, сквозь него низ кадра чуть виден; сверху вырез под палец */
-.env .sleeve { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; margin: -30% -4px 0; padding: 22px 14px 14px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 .98 0 0 0 .3 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E"), rgba(247, 246, 241, .93);
-  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-  -webkit-mask: radial-gradient(circle 14px at 50% 0, transparent 13px, #000 14px); mask: radial-gradient(circle 14px at 50% 0, transparent 13px, #000 14px); }
-.env .name { display: block; font: 500 clamp(20px, 1.8vw, 26px)/1.1 'Archivo', sans-serif; letter-spacing: -.03em; }
-.env .sub { display: block; margin-top: 6px; font-size: 13px; line-height: 1.4; color: #55534d; }
-.env .sub a { color: var(--ink); border-bottom: 1px solid currentColor; }
-.env .sub a:hover { color: var(--red); }
-.env .foot { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 12px; }
-.env .ask { font-size: 14px; font-weight: 500; }
+.envs { list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); column-gap: 28px; }
+.env { position: relative; display: flex; flex-direction: column; padding: 14px 0 0; border-top: 1px solid #dcdad2; }
+.env .n { color: var(--red); }
+.env .name { display: block; margin-top: 10px; font: 500 clamp(18px, 1.6vw, 22px)/1.15 'Archivo', sans-serif; letter-spacing: -.02em; }
+.env .sub { display: block; margin-top: 6px; font-size: 13px; line-height: 1.45; color: var(--muted); }
+.env .sub a { color: var(--ink); border-bottom: 1px solid #c9c7bf; }
+.env .sub a:hover { border-color: var(--red); }
+.env .ask { margin-top: auto; padding-top: 14px; align-self: flex-start; font-size: 14px; font-weight: 500; }
 .env .ask:hover { color: var(--red); }
-/* штамп — только на кармашке организаторов: там кейс */
-.env .stamp { padding: 2px 6px; border: 1.5px solid var(--red); border-radius: 3px; color: var(--red); font: 400 9px 'PT Mono', monospace; letter-spacing: .12em; text-transform: uppercase; transform: rotate(-6deg); opacity: .85; }
-.env .stamp:hover { opacity: 1; }
-.clients { margin-top: 40px; max-width: 980px; font-size: 14px; line-height: 1.8; color: var(--muted); }
+.envs:hover .env { color: #bcbab2; }
+.envs:hover .env:hover { color: var(--ink); }
+/* отпечаток выглядывает из-за линии, когда колонку выбирают */
+.env .print { position: absolute; left: 0; bottom: calc(100% + 10px); width: 120px; padding: 4px; background: #fff; box-shadow: 0 12px 26px -14px rgba(0,0,0,.45); pointer-events: none; opacity: 0; transform: translateY(14px) rotate(-2deg); transition: opacity .3s ease, transform .45s cubic-bezier(.3,.8,.25,1); }
+.env .print img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: #e6e4dc; }
+.env:hover .print { opacity: 1; transform: none; }
+.clients { margin-top: 44px; max-width: 980px; font-size: 14px; line-height: 1.8; color: var(--muted); }
 .clients b { font-weight: 400; color: var(--ink); }
 .clients b span { white-space: nowrap; }
-@media (max-width: 1100px) and (min-width: 721px) { .envs { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 36px; } }
+@media (hover: none) { .env .print { display: none; } .envs:hover .env { color: inherit; } }
+@media (max-width: 1100px) and (min-width: 721px) { .envs { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 28px; } }
+/* на телефоне — строки одна под другой */
 @media (max-width: 720px) {
-  .svc { padding: 64px 0 0; }
-  .svc .kick, .clients { margin-left: 16px; margin-right: 16px; }
-  .envs { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 64vw; gap: 16px; overflow-x: auto; padding: 22px 16px 16px; scroll-snap-type: x mandatory; scrollbar-width: none; }
-  .envs::-webkit-scrollbar { display: none; }
-  .env { scroll-snap-align: center; }
+  .svc { padding: 64px 16px 0; }
+  .envs { grid-template-columns: minmax(0, 1fr); }
+  .env { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; column-gap: 10px; align-items: baseline; padding: 14px 0 16px; }
+  .env .name { margin-top: 0; grid-column: 2; }
+  .env .sub { grid-column: 2; }
+  .env .ask { grid-column: 3; grid-row: 1; padding-top: 0; }
 }
 
 /* ── 3. связь ── */
@@ -694,40 +692,30 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
   loupe.addEventListener('click', function () { loupe.classList.remove('open'); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') loupe.classList.remove('open'); });
 
-  /* ── что снимаю: отпечаток в кармашке ── */
+  /* ── что снимаю ── */
   // [название, что входит, тема для сообщения, кадры этой съёмки]
   var svc = [
     ['Театрам', 'спектакль, закулисье, портреты труппы, афиши', 'спектакль', ['DeH4WYNEfpe_1', 'DW38O6lCMO7_1', 'DIi8BKLCVoA_1', 'C9xIt8UiAcG_1']],
     ['Танцевальным студиям', 'отчётные концерты, фестивали, конвенции', 'танцевальный концерт', ['DRC4YNqCLQN_12', 'C9XN2W_C1Uv_6', 'DKw7BV_iZTV_11', 'DKw7BV_iZTV_15']],
-    ['Организаторам', 'эксперимент, сцена, закулисье — <a href="series.html#exoball">три отчёта</a>', 'мероприятие', ['DPltYHpCNgY_3', 'DPs38vSiK68_2', 'DPi5nVqiHtc_1']],
+    ['Организаторам', 'эксперимент, сцена, закулисье — <a href="series.html#exoball">один вечер, три отчёта</a>', 'мероприятие', ['DPltYHpCNgY_3', 'DPs38vSiK68_2', 'DPi5nVqiHtc_1']],
     ['Плёночная прогулка', 'медленно, на плёнку, вне цифрового шума', 'плёночная фотопрогулка', ['DOmDKomiGIy_1', 'DQbqPoiiC81_1']],
     ['Портрет', 'в студии и на улице', 'портрет', ['DX9mvH_EUNE_9', 'DX9mvH_EUNE_3']]
   ];
-  var tilt = [-1, .7, -.4, .9, -.7];
   var svcEl = document.getElementById('svc');
   svcEl.innerHTML = svc.map(function (s, i) {
     var text = 'Здравствуйте, Андрей! Хочу обсудить съёмку: ' + s[2] + '.';
-    return '<li class="env" data-i="' + i + '" style="--r:' + tilt[i] + 'deg">' +
-      '<div class="print"><img src="' + thumb(s[3][0]) + '" alt="" loading="lazy"></div>' +
-      '<div class="sleeve"><span class="name">' + s[0] + '</span><span class="sub">' + s[1] + '</span>' +
-      '<div class="foot"><a class="ask scrib" href="' + WA + '?text=' + encodeURIComponent(text) + '" target="_blank" rel="noopener">обсудить →</a>' +
-      (i === 2 ? '<a class="stamp" href="series.html#exoball">кейс EXO BALL</a>' : '') + '</div></div></li>';
+    return '<li class="env" data-i="' + i + '"><span class="n mono">0' + (i + 1) + '</span>' +
+      '<div class="print" aria-hidden="true"><img src="' + thumb(s[3][0]) + '" alt="" loading="lazy"></div>' +
+      '<span class="name">' + s[0] + '</span><span class="sub">' + s[1] + '</span>' +
+      '<a class="ask scrib" href="' + WA + '?text=' + encodeURIComponent(text) + '" target="_blank" rel="noopener">обсудить →</a></li>';
   }).join('');
-  // отпечаток задвинули обратно — в следующий раз в кармашке другой кадр этой съёмки
+  // отпечаток спрятался — в следующий раз выглянет другой кадр этой съёмки
   var svcAt = svc.map(function () { return 0; });
-  function nextPrint(env) {
-    var i = +env.dataset.i, list = svc[i][3];
-    svcAt[i] = (svcAt[i] + 1) % list.length;
-    setTimeout(function () { env.querySelector('.print img').src = thumb(list[svcAt[i]]); }, 500);
-    new Image().src = thumb(list[(svcAt[i] + 1) % list.length]);
-  }
   svcEl.querySelectorAll('.env').forEach(function (env) {
-    env.addEventListener('mouseleave', function () { nextPrint(env); });
-    // на телефоне: тап — отпечаток выезжает, второй тап — задвигается, и в кармашке уже другой кадр
-    env.addEventListener('click', function (e) {
-      if (e.target.closest('a') || matchMedia('(hover: hover)').matches) return;
-      if (env.classList.toggle('open')) return;
-      nextPrint(env);
+    env.addEventListener('mouseleave', function () {
+      var i = +env.dataset.i, list = svc[i][3];
+      svcAt[i] = (svcAt[i] + 1) % list.length;
+      setTimeout(function () { env.querySelector('.print img').src = thumb(list[svcAt[i]]); }, 350);
     });
   });
 })();
