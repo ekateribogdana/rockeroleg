@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rockeroleg — серии</title>
 <meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f1f0ec'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Arial,sans-serif' font-weight='600' font-size='22' fill='%23141413'%3Er%3C/text%3E%3Cpath d='M7 26.5c6-1.4 12 .6 18-.8' stroke='%23e01e1e' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500&family=Archivo:wght@500&family=Caveat:wght@500&family=PT+Mono&family=Spectral:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
@@ -287,6 +288,10 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
   var byId = {};
   INSTA.frames.forEach(function (f) { byId[f.id] = f; });
   var S = INSTA.series;
+  // название серии для подписи кадра (кнопка «открыть крупно» озвучивается вместе с ним)
+  var seriesOf = {};
+  Object.keys(S).forEach(function (k) { (S[k].posts || []).forEach(function (p) { (p.frames || []).forEach(function (f) { seriesOf[f] = S[k].title; }); }); });
+  function label(id) { return 'Открыть кадр крупно' + (seriesOf[id] ? ': ' + esc(seriesOf[id]) : ''); }
 
   // порядок и подписи; камера и место — из подписей к постам
   // последнее поле — раскладка кадров (layouts ниже)
@@ -321,7 +326,7 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
     var p = d.split('-'); return +p[2] + ' ' + m[+p[1] - 1] + ' ' + p[0];
   }
   function shot(id, cls) {
-    return '<button type="button" data-id="' + id + '"' + (cls ? ' class="' + cls + '"' : '') + ' aria-label="Открыть кадр крупно"><img src="' + thumb(id) + '" alt="" loading="lazy"></button>';
+    return '<button type="button" data-id="' + id + '"' + (cls ? ' class="' + cls + '"' : '') + ' aria-label="' + label(id) + '"><img src="' + thumb(id) + '" alt="" loading="lazy"></button>';
   }
   function strip(ids) { return '<div class="row">' + ids.map(function (id) { return shot(id); }).join('') + '</div>'; }
 
@@ -340,7 +345,7 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
     wall: function (ids) { return '<div class="wall scroller">' + shots(ids) + '</div>'; },
     instant: function (ids) {
       return '<div class="instant">' + ids.map(function (id, i) {
-        return '<button type="button" data-id="' + id + '" style="--r:' + tilts[i % tilts.length] + 'deg" aria-label="Открыть кадр крупно"><img src="' + thumb(id) + '" alt="" loading="lazy"></button>';
+        return '<button type="button" data-id="' + id + '" style="--r:' + tilts[i % tilts.length] + 'deg" aria-label="' + label(id) + '"><img src="' + thumb(id) + '" alt="" loading="lazy"></button>';
       }).join('') + '</div>';
     }
   };
