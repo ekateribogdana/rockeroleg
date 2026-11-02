@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rockeroleg — фотограф Андрей Ивлиев</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f1f0ec'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Arial,sans-serif' font-weight='600' font-size='22' fill='%23141413'%3Er%3C/text%3E%3Cpath d='M7 26.5c6-1.4 12 .6 18-.8' stroke='%23e01e1e' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500&family=Archivo:wght@500&family=Caveat:wght@500&family=PT+Mono&family=Spectral:wght@400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --dark: #060606;
+  --paper: #f1f0ec;
+  --ink: #141413;
+  --muted: #8a887f;
+  --red: #b3120f;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font: 400 15px/1.5 'Onest', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+a { color: inherit; text-decoration: none; }
+img { display: block; }
+.mono { font: 400 11px 'PT Mono', ui-monospace, monospace; letter-spacing: .14em; text-transform: uppercase; }
+
+/* логотип на пишущей машинке: двухцветная лента — подпись красным, ник чёрным */
+/* логотип: титры «Семь» без царапин — чистые заглавные, красная пометка от руки, при наведении наклоняется «фото» */
+.brand { position: relative; display: inline-block; white-space: nowrap; }
+.brand-word { display: inline-block; font: 500 28px/1 'Archivo', sans-serif; letter-spacing: -.035em; color: #ebe9e2; }
+.brand-word span { display: inline-block; }
+/* логотип — имя строчными; «oleg» отмечен красным штрихом маркером, как кадр на контактном листе; при наведении штрих дорисовывается заново */
+.brand-word .mark { position: relative; }
+.brand-word .mark::after {
+  content: ''; position: absolute; left: -.04em; right: -.06em; bottom: -.16em; height: .16em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M3 6c18-3 40 2 62-1s24 1 32-2' stroke='%23e01e1e' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") center/100% 100% no-repeat;
+}
+.brand:hover .brand-word .mark::after { animation: redraw .45s ease-out; }
+@keyframes redraw { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+.scrib { position: relative; }
+.scrib::after {
+  content: ''; position: absolute; left: -4px; right: -4px; bottom: -7px; height: 9px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M2 6c15-4 30 3 48-1s32 2 48-2M6 8c20-3 40 2 60-1' stroke='%23c11414' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") center/100% 100% no-repeat;
+  clip-path: inset(0 100% 0 0); transition: clip-path .35s ease;
+}
+.scrib:hover::after, .scrib[aria-current]::after { clip-path: inset(0 0 0 0); }
+
+/* ── 1. первый экран: один кадр на весь экран, фраза поверх снизу ──
+   раньше за словами выскакивали кадры — Андрея они отвлекали (бэкап главной v25_hero-probes)
+   шрифты: Archivo — голос сайта (логотип, заголовки), Spectral — голос Андрея (его тексты и цитаты) */
+.hero { position: relative; height: 100svh; min-height: 560px; background: #060606; color: #f1f0ec; display: flex; flex-direction: column; }
+.hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* затемнение сверху под меню и снизу под фразу, середина кадра чистая */
+.hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(6,6,6,.55), rgba(6,6,6,0) 22%, rgba(6,6,6,0) 45%, rgba(6,6,6,.75)); pointer-events: none; }
+.hero > *:not(.hero-bg) { position: relative; z-index: 1; }
+.hero header { display: flex; justify-content: space-between; align-items: center; padding: 22px 36px; }
+.hero nav { display: flex; gap: 28px; font-size: 14px; }
+.hero .brand-word { color: #f1f0ec; }
+.phrase { flex: 1; display: flex; align-items: flex-end; padding: 0 36px 28px; }
+.phrase h1 { font: 500 clamp(34px, 5.4vw, 88px)/1 'Archivo', sans-serif; letter-spacing: -.04em; }
+.hero .foot { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 10px 24px; padding: 0 36px 28px; color: #bdbab1; }
+.hero .foot a { color: inherit; }
+@media (max-width: 720px) {
+  .phrase { padding: 0 16px 20px; }
+  .phrase h1 { font-size: clamp(32px, 10vw, 56px); }
+  .hero .foot { padding: 0 16px 24px; }
+}
+
+/* ── 2. контактный лист ── */
+/* настоящий контактный лист: мелкие кадры плотно, без подписей; название и крупный кадр — при наведении */
+.sheet { padding: 72px 36px 64px; background: #fff; }
+.sheet-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 16px 32px; margin-bottom: 36px; }
+.sheet-head h2 { font: 500 clamp(28px, 3.4vw, 44px)/1.1 'Archivo', sans-serif; letter-spacing: -.035em; }
+.filters { display: flex; flex-wrap: wrap; gap: 10px 24px; }
+.filters a { color: var(--muted); }
+.filters a[aria-current], .filters a:hover { color: var(--ink); }
+
+.strips { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 6px; }
+.frame { position: relative; cursor: zoom-in; }
+.frame:hover { z-index: 3; }
+.frame .t { display: none; }
+/* под листом: слева — что за кадр под курсором, справа — «весь лист» */
+.sheet-foot { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-top: 22px; min-height: 18px; }
+.now { color: var(--ink); transition: opacity .25s; }
+.now:empty { opacity: 0; }
+.now span { color: var(--muted); }
+.more { padding: 0; border: 0; background: none; cursor: pointer; color: var(--muted); transition: color .3s; }
+.more:hover { color: var(--ink); }
+.foot-r { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: baseline; gap: 10px 28px; }
+.loupe-actions a { color: #8d8b83; }
+.loupe-actions a:hover { color: #e9e7e0; }
+
+/* пометки красным карандашом */
+.note-pen {
+  position: absolute; z-index: 4; left: 55%; top: -26px; pointer-events: none; white-space: nowrap;
+  font: 500 19px/1 'Caveat', cursive; color: #c11414; transform: rotate(-7deg);
+}
+.note-pen svg { position: absolute; left: -26px; top: 14px; width: 30px; height: 26px; overflow: visible; }
+
+.frame .pic { position: relative; }
+.frame img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; filter: grayscale(1) contrast(1.05); transition: filter .45s; background: #eee; }
+.frame:hover img, .frame.marked img { filter: grayscale(0); }
+/* на телефоне наведения нет — лист сразу цветной */
+@media (hover: none) { .frame img { filter: none; } }
+.ring { position: absolute; left: -10%; top: -9%; width: 120%; height: 118%; overflow: visible; pointer-events: none; z-index: 2; }
+.ring path { stroke-dasharray: 2200; stroke-dashoffset: 2200; transition: stroke-dashoffset .8s ease; }
+.frame:hover .ring path, .frame.marked .ring path { stroke-dashoffset: 0; }
+.frame.marked .ring path { stroke-width: 6; }
+
+/* крестик «снять отметку» */
+.x {
+  position: absolute; z-index: 3; width: 24px; height: 24px; border-radius: 50%;
+  border: 0; background: var(--red); color: #fff; font: 500 15px/24px 'Onest', sans-serif; text-align: center;
+  cursor: pointer; padding: 0; box-shadow: 0 2px 8px rgba(0,0,0,.35); transition: transform .15s;
+}
+.x:hover { transform: scale(1.15); }
+.chosen .x { top: -10px; right: -10px; }
+.tally .reset { font: inherit; background: none; border: 0; color: #8d8b83; text-decoration: underline; cursor: pointer; padding: 0; }
+
+/* плашка с отмеченными кадрами */
+.tally {
+  position: fixed; left: 50%; bottom: 20px; z-index: 10; transform: translate(-50%, 160%);
+  display: flex; align-items: center; gap: 16px; padding: 10px 12px 10px 20px; border-radius: 999px;
+  background: var(--ink); color: #f1f0ec; font-size: 14px; white-space: nowrap;
+  box-shadow: 0 12px 32px -12px rgba(0,0,0,.5); transition: transform .4s cubic-bezier(.2,.8,.2,1);
+}
+.tally.show { transform: translate(-50%, 0); }
+.tally b { color: #ff5a4f; font-weight: 500; }
+.tally a { background: var(--red); color: #fff; padding: 8px 16px; border-radius: 999px; font-weight: 500; }
+
+/* «ваша плёнка»: пустые пронумерованные кадры, которые заполняются отмеченными «Хочу так же» */
+.refs { margin-top: 28px; max-width: 420px; }
+.refs:empty, .refs.none { display: none; }
+.refs-head { display: block; color: var(--muted); }
+.chosen { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px 14px; margin-top: 14px; }
+.chosen .c { position: relative; }
+.chosen img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.chosen svg { position: absolute; left: -12%; top: -10%; width: 124%; height: 120%; overflow: visible; }
+.contact .note { margin-top: 18px; color: var(--muted); max-width: 420px; }
+
+.kick { display: block; margin-bottom: 22px; color: var(--red); }
+
+/* ── 2½. что снимаю — противоположность листу: там много мелких кадров, здесь один крупный.
+   Наведение на строку меняет кадр (повторное — следующий кадр этой съёмки); «обсудить» — WhatsApp с готовым текстом.
+   Цены появятся рядом, когда их пришлёт Андрей */
+.svc { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 0 56px; align-items: start; padding: 88px 36px 64px; } /* воздух до «Связи» */
+.svc-fig { position: sticky; top: 24px; margin: 0; }
+.svc-fig .pic { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: #e6e4dc; }
+.svc-fig img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .5s ease, transform 1.2s ease; transform: scale(1.03); }
+.svc-fig img.on { opacity: 1; transform: none; }
+.svc-fig figcaption { margin-top: 10px; color: var(--muted); }
+.svc ol { list-style: none; border-bottom: 1px solid #dcdad2; }
+.svc li { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: baseline; gap: 16px; padding: 18px 0; border-top: 1px solid #dcdad2; cursor: pointer; transition: color .25s; }
+.svc .n { color: var(--red); }
+.svc .name { display: block; font: 500 clamp(22px, 2.6vw, 36px)/1.1 'Archivo', sans-serif; letter-spacing: -.03em; }
+.svc .sub { display: block; margin-top: 6px; font-size: 14px; color: var(--muted); }
+.svc .sub a { color: var(--ink); border-bottom: 1px solid #c9c7bf; transition: border-color .2s; }
+.svc .sub a:hover { border-color: var(--red); }
+/* у организаторов — готовый пример: метка-штамп «кейс», подчёркнуто только название */
+.svc .sub a.case { border: 0; margin-right: 6px; }
+.svc .sub .case .u { border-bottom: 1px solid #c9c7bf; transition: border-color .2s; }
+.svc .sub .case:hover .u { border-color: var(--red); }
+.svc .sub .tag { display: inline-block; margin-right: 8px; padding: 1px 5px 0; border: 1px solid var(--red); border-radius: 3px; color: var(--red); font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; vertical-align: 1px; }
+.svc li > img { display: none; }
+/* «обсудить» — только у выбранной строки, а не пять одинаковых подряд; кликается вся строка */
+.svc .ask { white-space: nowrap; font-size: 14px; color: var(--ink); opacity: 0; transform: translateX(-6px); transition: opacity .25s ease, transform .25s ease; }
+.svc li.on .ask, .svc .ask:focus-visible { opacity: 1; transform: none; }
+.svc .ask:hover { color: var(--red); }
+.svc li { color: #bcbab2; }
+.svc li.on { color: var(--ink); }
+.clients { margin-top: 24px; font-size: 14px; line-height: 1.8; color: var(--muted); }
+.clients b { font-weight: 400; color: var(--ink); }
+.clients b span { white-space: nowrap; }
+/* на телефоне большой кадр не помещается рядом — у каждой строки свой широкий кадр */
+@media (max-width: 720px) {
+  .svc { grid-template-columns: minmax(0, 1fr); padding: 64px 16px 0; }
+  .svc-fig { display: none; }
+  .svc li { grid-template-columns: 28px minmax(0, 1fr) auto; gap: 12px; padding: 16px 0 20px; color: var(--ink); }
+  .svc .ask { opacity: 1; transform: none; color: var(--red); }
+  .svc .ask .w { display: none; } /* на телефоне — только стрелка */
+  .svc li > img { display: block; grid-column: 1 / -1; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 30%; margin-top: 4px; }
+}
+
+/* ── 3. связь ── */
+/* заголовок, кадры-референсы, подсказка и ссылки — одной колонкой, ссылки сразу под текстом */
+/* на всю ширину с теми же полями, что у листа и шапки; место заполняет крупный заголовок, а не поля */
+.contact { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; padding: 80px 36px 64px; }
+.contact .big { font: 500 clamp(44px, 7.4vw, 128px)/.95 'Archivo', sans-serif; letter-spacing: -.045em; }
+.contact .big em { font-style: normal; position: relative; }
+.contact .big em svg { position: absolute; left: -8%; top: -18%; width: 116%; height: 136%; overflow: visible; }
+.contact .links { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px 36px; font-size: 20px; font-weight: 500; }
+.contact .links .ig { color: var(--muted); } /* писать — в мессенджеры, Instagram — посмотреть */
+.contact .links .where { flex-basis: 100%; color: var(--muted); }
+/* справа — Андрей наводит камеру на посетителя: отпечаток в белой рамке, при появлении — вспышка */
+/* три колонки: текст и ссылки · «ваша плёнка» с отмеченными кадрами · карточка Андрея */
+.contact { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 1fr auto; column-gap: clamp(32px, 5vw, 80px); }
+/* текст прижат к низу, ссылки — на одной линии с низом отпечатка */
+.contact > div:first-child { align-self: end; }
+/* карточка ведёт на «Обо мне»: там та же фотография на открытке. Небольшая — визитка рядом с «Ну что, снимаемся?», а не ещё один крупный кадр после «Что снимаю» */
+.contact .me { display: block; grid-column: 2; grid-row: 1 / span 2; align-self: end; width: clamp(180px, 17vw, 260px); margin-right: 14px; transform: rotate(2deg); transition: transform .35s cubic-bezier(.3,.7,.2,1); }
+.contact .me:hover { transform: rotate(0) translateY(-6px); }
+.contact .me .print { display: block; position: relative; background: #fff; padding: 10px; box-shadow: 0 24px 50px -24px rgba(0,0,0,.45); overflow: hidden; transition: box-shadow .35s; }
+.contact .me:hover .print { box-shadow: 0 34px 60px -26px rgba(0,0,0,.5); }
+.contact .me .cap em { font-style: normal; display: inline-block; transition: transform .3s; }
+.contact .me:hover .cap { color: var(--ink); }
+.contact .me:hover .cap em { transform: translateX(6px); }
+.contact .me img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.contact .me .print::after { content: ''; position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+.contact .me.seen .print::after { animation: flash .9s cubic-bezier(.1,.6,.3,1) .3s; }
+.contact .me .cap { display: block; margin-top: 14px; color: var(--muted); transition: color .3s; }
+@keyframes flash { 0% { opacity: .96; } 100% { opacity: 0; } }
+/* по клику карточку «берут в руки»: она подлетает к центру, вокруг темнеет, как стол на «Обо мне» */
+.veil { position: fixed; inset: 0; z-index: 30; background: #060606; opacity: 0; pointer-events: none; transition: opacity .7s ease .1s; }
+.veil.on { opacity: 1; }
+.contact .me.lifted { position: relative; z-index: 31; transition: transform .8s cubic-bezier(.2,.8,.2,1); }
+.contact .me.lifted .print { box-shadow: 0 50px 90px -30px rgba(0,0,0,.7); }
+.contact .me.lifted .cap { opacity: 0; }
+footer { padding: 0 36px 32px; display: flex; justify-content: space-between; color: var(--muted); }
+
+/* ── лупа ── */
+.loupe { position: fixed; inset: 0; z-index: 20; background: rgba(6,6,6,.92); display: none; place-items: center; padding: 24px; cursor: zoom-out; }
+.loupe.open { display: grid; }
+.loupe figure { position: relative; max-width: min(90vw, 620px); }
+.loupe img { max-height: 80svh; width: auto; max-width: 100%; margin: 0 auto; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+.loupe figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; color: #d6d4cc; margin-top: 14px; }
+.loupe-actions { display: flex; align-items: center; gap: 20px; }
+
+/* ── референсы по ссылке из сообщения (?refs=…): Андрей видит ровно те кадры, что отметил клиент ── */
+.board { position: fixed; inset: 0; z-index: 30; background: var(--paper); overflow-y: auto; padding: 32px 36px 64px; }
+.board[hidden] { display: none; }
+body.board-open { overflow: hidden; }
+.board-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 40px; }
+.board-top .mono { color: var(--red); }
+.board-top h2 { font: 500 clamp(40px, 6vw, 88px)/1 'Archivo', sans-serif; letter-spacing: -.04em; margin: 10px 0 12px; }
+.board-top p { color: var(--muted); max-width: 520px; }
+.board-close { font: inherit; background: none; border: 0; cursor: pointer; padding: 6px 0; white-space: nowrap; color: var(--ink); }
+.board-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 40px 28px; }
+.board-grid figure { min-width: 0; }
+.board-grid .pic { position: relative; }
+.board-grid img { width: 100%; height: auto; }
+.board-grid svg { position: absolute; left: -4%; top: -4%; width: 108%; height: 106%; pointer-events: none; overflow: visible; }
+.board-grid figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 22px; font-size: 14px; }
+.board-grid figcaption .mono { color: var(--muted); }
+.board-grid figcaption a { color: var(--muted); white-space: nowrap; }
+.board-grid figcaption a:hover { color: var(--ink); }
+@media (max-width: 720px) {
+  .board { padding: 24px 16px 48px; }
+  .board-top { flex-direction: column-reverse; gap: 12px; }
+  .board-grid { grid-template-columns: 1fr 1fr; gap: 28px 14px; }
+  .board-grid figcaption { flex-direction: column; gap: 2px; font-size: 13px; }
+}
+.want {
+  font: 500 14px 'Onest', sans-serif; color: #fff; background: var(--red); border: 0; border-radius: 999px;
+  padding: 9px 18px; cursor: pointer; transition: transform .15s;
+}
+.want:hover { transform: scale(1.04); }
+.want.on { background: none; color: #ff5a4f; box-shadow: inset 0 0 0 1.5px #ff5a4f; }
+.copied { color: var(--red); }
+
+@media (max-width: 1100px) { .strips { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
+@media (max-width: 720px) {
+  .brand-word { font-size: 22px; }
+  .hero header { padding: 16px; }
+  .hero nav { gap: 16px; font-size: 13px; }
+  .hero nav a:first-child { display: none; }
+  .stage .s, .rings .s { height: auto; width: min(74vw, 52svh); }
+  .stage { place-items: start center; padding-top: 96px; }
+  .hero .foot { flex-direction: column; align-items: flex-start; }
+  .sheet { padding: 56px 16px 24px; }
+  .strips { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; }
+  /* на телефоне кадры мелкие — пометки налезают на соседей, прячем */
+  .note-pen { display: none; }
+  .contact { grid-template-columns: 1fr; grid-template-rows: none; margin: 24px 16px 0; padding: 64px 0 48px; }
+  /* на телефоне — маленькая карточка рядом со ссылками: «напишите мне» */
+  .contact { grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; }
+  .contact > div:first-child { grid-column: 1 / -1; }
+  .contact .links { flex-direction: column; gap: 10px; align-self: end; }
+  .contact .me { grid-column: 2; grid-row: 2; width: 36vw; margin: 0 6px 0 0; }
+  .contact .me .print { padding: 6px; }
+  .contact .me .cap { margin-top: 10px; font-size: 10px; letter-spacing: .1em; }
+  footer { padding: 0 16px 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand-word span, .brand-word .mark::after { animation: none !important; }
+  .contact .me.seen .print::after { animation: none; }
+  .ring path { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="scratch" x="-5%" y="-30%" width="110%" height="160%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.04 0.9" numOctaves="2" seed="3" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="3" result="d"/>
+    <feTurbulence type="fractalNoise" baseFrequency="1.2" numOctaves="1" seed="9" result="g"/>
+    <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.4 1.9" result="holes"/>
+    <feComposite in="d" in2="holes" operator="in"/>
+  </filter>
+  <filter id="wobble" x="-20%" y="-20%" width="140%" height="140%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="2" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="5"/>
+  </filter>
+</svg>
+
+<section class="hero" id="top">
+  <img class="hero-bg" src="photos/insta/full/DNNZlz0CxzD_5.webp" alt="Две танцовщицы лицом к лицу" fetchpriority="high">
+  <header>
+    <a class="brand live" id="brand" href="#top" aria-label="Rockeroleg, фото"><span class="brand-word" aria-hidden="true"><span>r</span><span>o</span><span>c</span><span>k</span><span>e</span><span>r</span><span class="mark"><span>o</span><span>l</span><span>e</span><span>g</span></span></span></a>
+    <nav>
+      <a class="scrib" href="#sheet">Контактный лист</a>
+      <a class="scrib" href="series.html">Серии</a>
+      <a class="scrib" href="about.html">Обо мне</a>
+      <a class="scrib" href="#contact">Связь</a>
+    </nav>
+  </header>
+  <div class="phrase">
+    <h1>Люди, танец, сцена<br>и&nbsp;плёнка —<br>глазами Рокера</h1>
+  </div>
+  <div class="foot">
+    <span class="mono">Андрей Ивлиев · он же Rockeroleg · фотограф</span>
+    <a class="mono" href="#sheet">контактный лист ↓</a>
+  </div>
+</section>
+
+<section class="sheet" id="sheet">
+  <div class="sheet-head">
+    <h2>Контактный лист</h2>
+    <div class="filters mono" id="filters"></div>
+  </div>
+  <div class="strips" id="strips"></div>
+  <div class="sheet-foot">
+    <span class="now mono" id="now" aria-live="polite"></span>
+    <span class="foot-r"><button type="button" class="more mono" id="more" hidden></button><a class="to-series scrib" href="series.html">Серии — истории, которые не помещаются в один кадр →</a></span>
+  </div>
+</section>
+
+<section class="svc" id="services">
+  <figure class="svc-fig" id="svc-fig" aria-hidden="true"><div class="pic"><img alt=""><img alt=""></div><figcaption class="mono"></figcaption></figure>
+  <div>
+    <span class="kick mono">Что снимаю</span>
+    <ol id="svc"></ol>
+    <p class="clients">Снимал для: <b><span>LIBERTY Dance Studio</span> · <span>Elefunk</span> · <span>High Heels Convention</span> · <span>EXO BALL</span> · <span>спектакль «СЕМЬ»</span> · <span>The Sun Line</span> · <span>учебный театр школы-студии МХАТ</span></b></p>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div>
+    <span class="kick mono">Связь</span>
+    <div class="big" id="contact-title"></div>
+    <p class="note" id="contact-note"></p>
+    <div class="refs none" id="refs">
+      <span class="refs-head mono" id="refs-head"></span>
+      <div class="chosen" id="chosen"></div>
+    </div>
+  </div>
+  <div class="links">
+    <a class="scrib" id="tg" href="https://t.me/+79060829514" target="_blank" rel="noopener">Telegram</a>
+    <a class="scrib" id="wa" href="https://wa.me/79060829514" target="_blank" rel="noopener">WhatsApp</a>
+    <a class="scrib ig" href="https://www.instagram.com/rockeroleg/" target="_blank" rel="noopener">Instagram</a>
+    <span class="where mono">Москва · отвечаю в течение дня</span>
+  </div>
+  <a class="me" id="me" href="about.html" aria-label="Обо мне: открытка от Андрея">
+    <span class="print"><img src="photos/andrey.jpg" alt="Андрей Ивлиев наводит камеру" loading="lazy"></span>
+    <span class="cap mono">Андрей Ивлиев · обо мне <em>→</em></span>
+  </a>
+  <div class="veil" id="veil" aria-hidden="true"></div>
+</section>
+
+<div class="tally" id="tally" aria-live="polite"><span id="tally-text"></span><button type="button" class="reset" id="reset">сбросить</button><a href="#contact">Записаться →</a></div>
+<footer class="mono"><span>© 2026 Rockeroleg</span><span>rockeroleg.ru</span></footer>
+
+<div class="loupe" id="loupe" role="dialog" aria-modal="true" aria-label="Кадр под лупой">
+  <figure><img id="loupe-img" alt=""><figcaption><span id="loupe-title"></span><span class="loupe-actions"><button type="button" class="want" id="want">Хочу так же</button><a class="mono" id="loupe-post" target="_blank" rel="noopener">пост в Instagram →</a></span></figcaption></figure>
+</div>
+
+<section class="board" id="board" role="dialog" aria-modal="true" aria-labelledby="board-title" hidden>
+  <div class="board-top">
+    <div><div class="mono">Референсы</div><h2 id="board-title">Хочу так же</h2><p id="board-note"></p></div>
+    <button type="button" class="board-close scrib" id="board-close">На сайт ×</button>
+  </div>
+  <div class="board-grid" id="board-grid"></div>
+</section>
+
+<script src="photos/insta/insta.js"></script>
+<script>
+(function () {
+  // логотип дрожит пару секунд при загрузке, дальше — только при наведении
+  setTimeout(function () { document.getElementById('brand').classList.remove('live'); }, 2400);
+
+  // кадры из Instagram: photos/insta/full — крупно, photos/insta/thumb — превью
+  function full(id) { return 'photos/insta/full/' + id + '.webp'; }
+  function thumb(id) { return 'photos/insta/thumb/' + id + '.webp'; }
+
+  /* ── контактный лист ── */
+  var sections = [
+    ['all', 'Все'], ['people', 'Люди'], ['dance', 'Танец'], ['stage', 'Сцена'], ['film', 'Плёнка'], ['wedding', 'Свадьбы']
+  ];
+  // отбор из Instagram (photos/insta/insta.js): [раздел, id, название, камера, пост]
+  var byId = {};
+  INSTA.frames.forEach(function (f) { byId[f.id] = f; });
+  var picked = INSTA.frames.filter(function (f) { return f.cat; }).map(function (f) { return [f.cat, f.id, f.title, f.cam, f.code]; });
+  // сначала по одному кадру от каждой съёмки, вторые и третьи — следом, чтобы рядом не стояли кадры одного поста
+  var nth = {};
+  picked.forEach(function (w, i) { w.rank = nth[w[4]] = (nth[w[4]] || 0) + 1; w.pos = i; });
+  picked.sort(function (a, b) { return a.rank - b.rank || a.pos - b.pos; });
+  // во «Всех» разделы чередуются, чтобы лист не начинался с сорока кадров танца подряд
+  var works = [], queues = sections.slice(1).map(function (s) { return picked.filter(function (w) { return w[0] === s[0]; }); });
+  for (var k = 0; queues.some(function (q) { return q.length; }); k++) {
+    var q = queues[k % queues.length];
+    if (q.length) works.push(q.shift());
+  }
+  // референсы: кадры, где посетитель нажал «Хочу так же»; живут в его браузере
+  var KEY = 'rk-marked';
+  var marked = [];
+  try { marked = JSON.parse(localStorage.getItem(KEY) || '[]') || []; } catch (e) { marked = []; }
+  // отметки, оставшиеся от старого набора кадров с wfolio, больше не показать
+  marked = marked.filter(function (id) { return byId[id]; });
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(marked)); } catch (e) {} }
+  function title(id) { return byId[id] ? byId[id].title : id; }
+  function plural(n) {
+    var m10 = n % 10, m100 = n % 100;
+    if (m10 === 1 && m100 !== 11) return n + ' кадр';
+    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return n + ' кадра';
+    return n + ' кадров';
+  }
+  var rings = [
+    'M60 40C200 -10 420 0 470 60s10 380-20 470-300 40-380 10S-10 380 10 250 30 70 120 30',
+    'M80 20c150-30 330-10 390 50s20 360-10 460-320 50-400 0S0 360 20 220 70 40 160 20',
+    'M50 60C170 0 400 -10 460 50s20 400-20 480-310 30-390 0S0 400 10 260 40 80 140 40'
+  ];
+  var filters = document.getElementById('filters');
+  var strips = document.getElementById('strips');
+  var current = 'all';
+
+  filters.innerHTML = sections.map(function (s) {
+    return '<a class="scrib" href="#sheet" data-sec="' + s[0] + '">' + s[1] + '</a>';
+  }).join('');
+  filters.addEventListener('click', function (e) {
+    var a = e.target.closest('a'); if (!a) return;
+    e.preventDefault(); current = a.dataset.sec; expanded = false; render();
+  });
+  // во «Всех» сначала четыре ряда (на телефоне — шесть по четыре), остальное — по кнопке; разделы показываются целиком
+  var LIMIT = matchMedia('(max-width: 720px)').matches ? 24 : 48, expanded = false;
+  var more = document.getElementById('more');
+  more.addEventListener('click', function () { expanded = true; render(); });
+
+  // пометки карандашом — демо, тексты должен дать Андрей
+  var pen = { 'DYROOQLlmhI_2': 'красный!', 'DTVB1WiiFpA_4': 'вот этот', 'DaFVjJfCA1__8': 'на брелок', 'DeH4WYNEfpe_1': 'МХАТ' };
+  var penArrow = '<svg viewBox="0 0 30 26" aria-hidden="true"><path d="M28 2C18 6 10 12 4 22M4 22l1-8M4 22l8-3" fill="none" stroke="#c11414" stroke-width="1.8" stroke-linecap="round" filter="url(#wobble)"/></svg>';
+  function frameHtml(w, i) {
+    return '<div class="frame' + (marked.indexOf(w[1]) > -1 ? ' marked' : '') + '" tabindex="0" data-slug="' + w[1] + '" data-title="' + w[2] + '">' +
+      '<div class="pic"><img src="' + thumb(w[1]) + '" alt="' + w[2] + '" loading="lazy">' +
+      '<svg class="ring" viewBox="0 0 500 580" preserveAspectRatio="none" aria-hidden="true"><path d="' + rings[i % 3] +
+      '" fill="none" stroke="#c11414" stroke-width="5" stroke-linecap="round" filter="url(#wobble)"/></svg></div>' +
+      (pen[w[1]] ? '<span class="note-pen">' + penArrow + pen[w[1]] + '</span>' : '') +
+      '<span class="t">' + w[2] + (w[3] ? '<span class="cam mono">' + w[3] + '</span>' : '') + '</span></div>';
+  }
+  function render() {
+    var list = current === 'all' ? works : works.filter(function (w) { return w[0] === current; });
+    var shown = current === 'all' && !expanded ? list.slice(0, LIMIT) : list;
+    strips.innerHTML = shown.map(frameHtml).join('');
+    more.hidden = shown.length === list.length;
+    more.textContent = 'Весь лист · ' + plural(list.length) + ' ↓';
+    filters.querySelectorAll('a').forEach(function (a) {
+      if (a.dataset.sec === current) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+    });
+  }
+  render();
+
+  // наведение на кадр: под листом — его название и камера; сам кадр не заслоняем, на нём обводка
+  var now = document.getElementById('now');
+  strips.addEventListener('pointerover', function (e) {
+    var f = e.target.closest('.frame'); if (!f) return;
+    var d = byId[f.dataset.slug];
+    now.innerHTML = d.title + (d.cam ? ' <span>· ' + d.cam + '</span>' : '');
+  });
+  strips.addEventListener('pointerleave', function () { now.textContent = ''; });
+
+  /* ── отметки: плашка и блок связи ── */
+  var WA = 'https://wa.me/79060829514';
+  var contactVisible = false;
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { contactVisible = es[0].isIntersecting; updateMarks(); })
+      .observe(document.getElementById('contact'));
+    // портрет «щёлкает» вспышкой один раз, когда до него доскроллили
+    new IntersectionObserver(function (es, o) {
+      if (es[0].isIntersecting) { document.getElementById('me').classList.add('seen'); o.disconnect(); }
+    }, { threshold: .6 }).observe(document.getElementById('me'));
+  }
+
+  /* ── карточку Андрея берут в руки: подлетает к центру, вокруг темнеет, дальше «Обо мне» ── */
+  var me = document.getElementById('me'), veil = document.getElementById('veil');
+  me.addEventListener('click', function (e) {
+    // открыть в новой вкладке и без анимации — как обычная ссылка
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    e.preventDefault();
+    // центрируем само фото, а не карточку с подписью: масштаб идёт от центра карточки
+    var r = me.getBoundingClientRect(), p = me.querySelector('.print').getBoundingClientRect();
+    var s = Math.min(innerHeight * .8 / p.height, innerWidth * .82 / p.width, 2.4);
+    var mx = r.left + r.width / 2, my = r.top + r.height / 2;
+    var dx = innerWidth / 2 - mx - s * (p.left + p.width / 2 - mx);
+    var dy = innerHeight / 2 - my - s * (p.top + p.height / 2 - my);
+    me.classList.add('lifted');
+    me.style.transform = 'translate(' + dx.toFixed(0) + 'px,' + dy.toFixed(0) + 'px) scale(' + s.toFixed(3) + ') rotate(-1deg)';
+    veil.classList.add('on');
+    // запоминаем, где карточка «в руках»: «Обо мне» начнёт открытку ровно отсюда и положит на стол
+    try {
+      sessionStorage.setItem('rk-hand', JSON.stringify({
+        x: innerWidth / 2, y: innerHeight / 2, w: me.querySelector('.print').offsetWidth * s, rot: -1
+      }));
+    } catch (err) {}
+    // #hand — на «Обо мне» открытка уже «в руках» и не прилетает заново
+    setTimeout(function () { location.href = me.href + '#hand'; }, 950);
+  });
+  // вернулись кнопкой «назад» — страница из кэша браузера: кладём карточку на место
+  addEventListener('pageshow', function (e) {
+    if (!e.persisted) return;
+    me.classList.remove('lifted'); me.style.transform = ''; veil.classList.remove('on');
+  });
+  function updateMarks() {
+    var n = marked.length;
+    document.querySelectorAll('#rings [data-ring]').forEach(function (s) {
+      s.classList.toggle('marked', marked.indexOf(s.dataset.ring) > -1);
+    });
+    document.getElementById('tally').classList.toggle('show', n > 0 && !contactVisible);
+    document.getElementById('tally-text').innerHTML = 'Референсы: <b>' + plural(n) + '</b>';
+    var titleEl = document.getElementById('contact-title');
+    var note = document.getElementById('contact-note');
+    var chosen = document.getElementById('chosen');
+    var wa = document.getElementById('wa');
+    // «ваша плёнка» появляется под текстом, только когда в ней есть кадры
+    document.getElementById('refs').classList.toggle('none', !n);
+    document.getElementById('refs-head').textContent = 'Ваша плёнка · ' + plural(n);
+    if (!n) {
+      titleEl.innerHTML = 'Ну что,<br>снимаемся?';
+      note.textContent = 'Сложно описать, чего хочется? Откройте кадры на листе и нажмите «Хочу так же» — пришлёте их как референсы';
+      chosen.innerHTML = '';
+      wa.href = WA;
+      if (tg) syncTg();
+      return;
+    }
+    titleEl.innerHTML = 'Ваши референсы:<br>' + plural(n);
+    note.textContent = 'В сообщении будет ссылка на эти кадры — Андрей увидит ровно их. В WhatsApp текст подставится сам, для Telegram скопирую — останется вставить';
+    chosen.innerHTML = marked.map(function (s, i) {
+      return '<div class="c"><img src="' + thumb(s) + '" alt="' + title(s) + '">' +
+        '<svg viewBox="0 0 500 580" preserveAspectRatio="none" aria-hidden="true"><path d="' + rings[i % 3] +
+        '" fill="none" stroke="#c11414" stroke-width="10" stroke-linecap="round" filter="url(#wobble)"/></svg>' +
+        '<button type="button" class="x" data-unmark="' + s + '" aria-label="Снять отметку: ' + title(s) + '">×</button></div>';
+    }).join('');
+    wa.href = WA + '?text=' + encodeURIComponent(message());
+    if (tg) syncTg();
+  }
+  // в сообщении ссылка на сам выбор: по ней открывается экран с отмеченными кадрами
+  var SITE = /^https?:/.test(location.protocol) ? location.origin + location.pathname : 'https://ekateribogdana.github.io/rockeroleg/';
+  function refsLink() { return SITE + '?refs=' + marked.join(','); }
+  function message() {
+    return 'Привет! Хочу съёмку, как в этих кадрах:\n' + refsLink();
+  }
+
+  // Telegram не умеет готовый текст по ссылке, поэтому два шага: первый клик копирует текст и говорит об этом на самой кнопке,
+  // второй открывает чат. Если отметки поменялись, снова начинаем с копирования
+  var tg = document.getElementById('tg'), tgCopied = null;
+  function copyText(t) {
+    try { navigator.clipboard.writeText(t).catch(fallback); } catch (e) { fallback(); }
+    function fallback() {
+      var a = document.createElement('textarea'); a.value = t; a.style.position = 'fixed'; a.style.opacity = '0';
+      document.body.appendChild(a); a.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      a.remove();
+    }
+  }
+  function syncTg() {
+    if (!marked.length || (tgCopied !== null && tgCopied !== message())) tgCopied = null;
+    tg.textContent = tgCopied !== null ? 'Открыть Telegram →' : 'Telegram';
+    if (tgCopied !== null) document.getElementById('contact-note').innerHTML = '<span class="copied">Текст со ссылкой на кадры скопирован.</span> Откройте Telegram и в чате с Андреем нажмите «Вставить»';
+  }
+  tg.addEventListener('click', function (e) {
+    if (!marked.length || tgCopied === message()) return;
+    e.preventDefault();
+    tgCopied = message();
+    copyText(tgCopied);
+    syncTg();
+  });
+  updateMarks();
+
+  /* ── лупа: открыть кадр = отметить его ── */
+  var loupe = document.getElementById('loupe');
+  var openSlug = null;
+  function setMarked(slug, on) {
+    var i = marked.indexOf(slug);
+    if (on && i < 0) marked.push(slug);
+    if (!on && i > -1) marked.splice(i, 1);
+    save();
+    var f = strips.querySelector('[data-slug="' + slug + '"]');
+    if (f) f.classList.toggle('marked', on);
+    updateMarks();
+  }
+  var want = document.getElementById('want');
+  function syncWant() {
+    var on = marked.indexOf(openSlug) > -1;
+    want.classList.toggle('on', on);
+    want.textContent = on ? '✓ В референсах · убрать' : 'Хочу так же';
+  }
+  function openLoupe(f) {
+    openSlug = f.dataset.slug;
+    document.getElementById('loupe-img').src = full(openSlug);
+    document.getElementById('loupe-title').textContent = f.dataset.title;
+    document.getElementById('loupe-post').href = 'https://www.instagram.com/p/' + byId[openSlug].code + '/';
+    syncWant();
+    loupe.classList.add('open');
+  }
+  want.addEventListener('click', function (e) {
+    e.stopPropagation();
+    setMarked(openSlug, marked.indexOf(openSlug) < 0);
+    syncWant();
+  });
+  // крестики на превью в блоке связи снимают отметку
+  document.addEventListener('click', function (e) {
+    var x = e.target.closest('[data-unmark]');
+    if (!x) return;
+    e.stopPropagation();
+    setMarked(x.dataset.unmark, false);
+  }, true);
+  document.getElementById('reset').addEventListener('click', function () {
+    marked.slice().forEach(function (s) { setMarked(s, false); });
+  });
+  strips.addEventListener('click', function (e) {
+    if (e.target.closest('[data-unmark]')) return;
+    var f = e.target.closest('.frame'); if (f) openLoupe(f);
+  });
+  strips.addEventListener('keydown', function (e) { if (e.key === 'Enter') { var f = e.target.closest('.frame'); if (f) openLoupe(f); } });
+  loupe.addEventListener('click', function () { loupe.classList.remove('open'); });
+
+  /* ── экран референсов по ссылке ?refs=id,id: отметки посетителя не трогаем ── */
+  var refsParam = new URLSearchParams(location.search).get('refs');
+  var board = document.getElementById('board');
+  function closeBoard() {
+    board.hidden = true; document.body.classList.remove('board-open');
+    history.replaceState(null, '', location.pathname + location.hash);
+  }
+  if (refsParam) {
+    var refs = refsParam.split(',').filter(function (id, i, a) { return byId[id] && a.indexOf(id) === i; });
+    if (refs.length) {
+      document.getElementById('board-note').textContent = plural(refs.length) + ' с контактного листа, отмеченные как «хочу так же»';
+      document.getElementById('board-grid').innerHTML = refs.map(function (id, i) {
+        var d = byId[id];
+        return '<figure><div class="pic"><img src="' + full(id) + '" alt="' + d.title + '">' +
+          '<svg viewBox="0 0 500 580" preserveAspectRatio="none" aria-hidden="true"><path d="' + rings[i % 3] +
+          '" fill="none" stroke="#c11414" stroke-width="5" stroke-linecap="round" filter="url(#wobble)"/></svg></div>' +
+          '<figcaption><span>' + d.title + (d.cam ? ' <span class="mono">· ' + d.cam + '</span>' : '') + '</span>' +
+          '<a href="https://www.instagram.com/p/' + d.code + '/" target="_blank" rel="noopener">пост в Instagram →</a></figcaption></figure>';
+      }).join('');
+      board.hidden = false; document.body.classList.add('board-open');
+    }
+  }
+  document.getElementById('board-close').addEventListener('click', closeBoard);
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    if (loupe.classList.contains('open')) loupe.classList.remove('open'); else if (!board.hidden) closeBoard();
+  });
+
+  /* ── что снимаю ── */
+  // [название, что внутри, тема для сообщения, кадры этой съёмки — первый показывается сразу, кадр для телефона, если первый не режется в ширину]
+  var svc = [
+    ['Театрам', 'спектакль, закулисье, портреты труппы, афиши', 'спектакль', ['DIi8BKLCVoA_1', 'DW38O6lCMO7_1', 'DeH4WYNEfpe_1', 'C9xIt8UiAcG_1'], 'DeH4WYNEfpe_1'],
+    ['Танцевальным студиям', 'отчётные концерты, фестивали, конвенции', 'танцевальный концерт', ['DRC4YNqCLQN_12', 'C9XN2W_C1Uv_6', 'DKw7BV_iZTV_11', 'DKw7BV_iZTV_15']],
+    ['Организаторам', '<a class="case" href="series.html#exoball"><span class="tag mono">кейс</span><span class="u">один вечер — три отчёта</span> →</a> эксперимент, сцена, закулисье', 'мероприятие', ['DPltYHpCNgY_3', 'DPs38vSiK68_2', 'DPi5nVqiHtc_1']],
+    ['Плёночная фотопрогулка', 'медленно, на плёнку, вне цифрового шума', 'плёночная фотопрогулка', ['DOmDKomiGIy_1', 'DQbqPoiiC81_1']],
+    ['Портрет', 'в студии и на улице', 'портрет', ['DX9mvH_EUNE_9', 'DX9mvH_EUNE_3']]
+  ];
+  var svcEl = document.getElementById('svc');
+  svcEl.innerHTML = svc.map(function (s, i) {
+    var text = 'Здравствуйте, Андрей! Хочу обсудить съёмку: ' + s[2] + '.';
+    return '<li data-i="' + i + '"><span class="n mono">' + ('0' + (i + 1)).slice(-2) + '</span>' +
+      '<span><span class="name">' + s[0] + '</span><span class="sub">' + s[1] + '</span></span>' +
+      '<a class="ask scrib" href="' + WA + '?text=' + encodeURIComponent(text) + '" target="_blank" rel="noopener"><span class="w">обсудить </span>→</a>' +
+      '<img src="' + full(s[4] || s[3][0]) + '" alt="" loading="lazy"></li>';
+  }).join('');
+  // большой кадр: два слоя, новый проявляется поверх старого
+  var fig = document.getElementById('svc-fig'), figImgs = fig.querySelectorAll('img'), figCap = fig.querySelector('figcaption');
+  var rows = svcEl.querySelectorAll('li'), svcAt = svc.map(function () { return 0; }), svcCur = -1, layer = 0;
+  function svcShow(i) {
+    if (i === svcCur) svcAt[i] = (svcAt[i] + 1) % svc[i][3].length; // снова на ту же строку — следующий кадр
+    svcCur = i;
+    var next = figImgs[layer = 1 - layer];
+    next.src = full(svc[i][3][svcAt[i]]);
+    next.classList.add('on'); figImgs[1 - layer].classList.remove('on');
+    figCap.textContent = ('0' + (i + 1)).slice(-2) + ' · ' + svc[i][0];
+    rows.forEach(function (r, k) { r.classList.toggle('on', k === i); });
+    new Image().src = full(svc[i][3][(svcAt[i] + 1) % svc[i][3].length]);
+  }
+  svcShow(0);
+  var svcLast = null;
+  svcEl.addEventListener('pointerover', function (e) {
+    var li = e.target.closest('li'); if (!li || li === svcLast) return;
+    svcLast = li; svcShow(+li.dataset.i);
+  });
+  svcEl.addEventListener('pointerleave', function () { svcLast = null; });
+  // вся строка ведёт в WhatsApp; ссылка на кейс внутри — сама по себе
+  svcEl.addEventListener('click', function (e) {
+    var li = e.target.closest('li'); if (!li || e.target.closest('a')) return;
+    window.open(li.querySelector('.ask').href, '_blank', 'noopener');
+  });
+  // первые кадры подгружаем заранее, чтобы при наведении не было пустоты
+  addEventListener('load', function () { svc.forEach(function (s) { new Image().src = full(s[3][0]); }); });
+})();
+</script>
+</body>
+</html>
