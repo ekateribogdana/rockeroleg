@@ -666,6 +666,7 @@ body.board-open { overflow: hidden; }
       note.textContent = 'Сложно описать, чего хочется? Откройте кадры на листе и нажмите «Хочу так же» — пришлёте их как референсы';
       chosen.innerHTML = '';
       wa.href = WA;
+      if (tg) syncTg();
       return;
     }
     titleEl.innerHTML = 'Ваши референсы:<br>' + plural(n);
@@ -677,6 +678,7 @@ body.board-open { overflow: hidden; }
         '<button type="button" class="x" data-unmark="' + s + '" aria-label="Снять отметку: ' + title(s) + '">×</button></div>';
     }).join('');
     wa.href = WA + '?text=' + encodeURIComponent(message());
+    if (tg) syncTg();
   }
   // в сообщении ссылка на сам выбор: по ней открывается экран с отмеченными кадрами; ниже — что дописать клиенту
   var SITE = /^https?:/.test(location.protocol) ? location.origin + location.pathname : 'https://ekateribogdana.github.io/rockeroleg/';
@@ -685,12 +687,29 @@ body.board-open { overflow: hidden; }
     return 'Привет! Хочу съёмку, как в этих кадрах:\n' + refsLink() + '\n\nЧто за съёмка: \nКогда: \nГде: ';
   }
 
-  // Telegram не умеет готовый текст по ссылке: копируем список в буфер
-  document.getElementById('tg').addEventListener('click', function () {
-    if (!marked.length) return;
-    var note = document.getElementById('contact-note');
-    function done() { note.innerHTML = '<span class="copied">Список скопирован</span> — вставьте его в сообщение в Telegram'; }
-    try { navigator.clipboard.writeText(message()).then(done, function () {}); } catch (e) {}
+  // Telegram не умеет готовый текст по ссылке, поэтому два шага: первый клик копирует текст и говорит об этом на самой кнопке,
+  // второй открывает чат. Если отметки поменялись, снова начинаем с копирования
+  var tg = document.getElementById('tg'), tgCopied = null;
+  function copyText(t) {
+    try { navigator.clipboard.writeText(t).catch(fallback); } catch (e) { fallback(); }
+    function fallback() {
+      var a = document.createElement('textarea'); a.value = t; a.style.position = 'fixed'; a.style.opacity = '0';
+      document.body.appendChild(a); a.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      a.remove();
+    }
+  }
+  function syncTg() {
+    if (!marked.length || (tgCopied !== null && tgCopied !== message())) tgCopied = null;
+    tg.textContent = tgCopied !== null ? 'Открыть Telegram →' : 'Telegram';
+    if (tgCopied !== null) document.getElementById('contact-note').innerHTML = '<span class="copied">Текст со ссылкой на кадры скопирован.</span> Откройте Telegram и в чате с Андреем нажмите «Вставить»';
+  }
+  tg.addEventListener('click', function (e) {
+    if (!marked.length || tgCopied === message()) return;
+    e.preventDefault();
+    tgCopied = message();
+    copyText(tgCopied);
+    syncTg();
   });
   updateMarks();
 
