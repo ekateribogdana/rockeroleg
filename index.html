@@ -680,11 +680,11 @@ body.board-open { overflow: hidden; }
     wa.href = WA + '?text=' + encodeURIComponent(message());
     if (tg) syncTg();
   }
-  // в сообщении ссылка на сам выбор: по ней открывается экран с отмеченными кадрами; ниже — что дописать клиенту
+  // в сообщении ссылка на сам выбор: по ней открывается экран с отмеченными кадрами
   var SITE = /^https?:/.test(location.protocol) ? location.origin + location.pathname : 'https://ekateribogdana.github.io/rockeroleg/';
   function refsLink() { return SITE + '?refs=' + marked.join(','); }
   function message() {
-    return 'Привет! Хочу съёмку, как в этих кадрах:\n' + refsLink() + '\n\nЧто за съёмка: \nКогда: \nГде: ';
+    return 'Привет! Хочу съёмку, как в этих кадрах:\n' + refsLink();
   }
 
   // Telegram не умеет готовый текст по ссылке, поэтому два шага: первый клик копирует текст и говорит об этом на самой кнопке,
