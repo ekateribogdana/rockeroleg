@@ -236,6 +236,31 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
 .loupe img { max-height: 80svh; width: auto; max-width: 100%; margin: 0 auto; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
 .loupe figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; color: #d6d4cc; margin-top: 14px; }
 .loupe-actions { display: flex; align-items: center; gap: 20px; }
+
+/* ── референсы по ссылке из сообщения (?refs=…): Андрей видит ровно те кадры, что отметил клиент ── */
+.board { position: fixed; inset: 0; z-index: 30; background: var(--paper); overflow-y: auto; padding: 32px 36px 64px; }
+.board[hidden] { display: none; }
+body.board-open { overflow: hidden; }
+.board-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 40px; }
+.board-top .mono { color: var(--red); }
+.board-top h2 { font: 500 clamp(40px, 6vw, 88px)/1 'Archivo', sans-serif; letter-spacing: -.04em; margin: 10px 0 12px; }
+.board-top p { color: var(--muted); max-width: 520px; }
+.board-close { font: inherit; background: none; border: 0; cursor: pointer; padding: 6px 0; white-space: nowrap; color: var(--ink); }
+.board-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 40px 28px; }
+.board-grid figure { min-width: 0; }
+.board-grid .pic { position: relative; }
+.board-grid img { width: 100%; height: auto; }
+.board-grid svg { position: absolute; left: -4%; top: -4%; width: 108%; height: 106%; pointer-events: none; overflow: visible; }
+.board-grid figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 22px; font-size: 14px; }
+.board-grid figcaption .mono { color: var(--muted); }
+.board-grid figcaption a { color: var(--muted); white-space: nowrap; }
+.board-grid figcaption a:hover { color: var(--ink); }
+@media (max-width: 720px) {
+  .board { padding: 24px 16px 48px; }
+  .board-top { flex-direction: column-reverse; gap: 12px; }
+  .board-grid { grid-template-columns: 1fr 1fr; gap: 28px 14px; }
+  .board-grid figcaption { flex-direction: column; gap: 2px; font-size: 13px; }
+}
 .want {
   font: 500 14px 'Onest', sans-serif; color: #fff; background: var(--red); border: 0; border-radius: 999px;
   padding: 9px 18px; cursor: pointer; transition: transform .15s;
@@ -361,6 +386,14 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
 <div class="loupe" id="loupe" role="dialog" aria-modal="true" aria-label="Кадр под лупой">
   <figure><img id="loupe-img" alt=""><figcaption><span id="loupe-title"></span><span class="loupe-actions"><button type="button" class="want" id="want">Хочу так же</button><a class="mono" id="loupe-post" target="_blank" rel="noopener">пост в Instagram →</a></span></figcaption></figure>
 </div>
+
+<section class="board" id="board" role="dialog" aria-modal="true" aria-labelledby="board-title" hidden>
+  <div class="board-top">
+    <div><div class="mono">Референсы</div><h2 id="board-title">Хочу так же</h2><p id="board-note"></p></div>
+    <button type="button" class="board-close scrib" id="board-close">На сайт ×</button>
+  </div>
+  <div class="board-grid" id="board-grid"></div>
+</section>
 
 <script src="photos/insta/insta.js"></script>
 <script>
@@ -636,7 +669,7 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
       return;
     }
     titleEl.innerHTML = 'Ваши референсы:<br>' + plural(n);
-    note.textContent = 'В WhatsApp список уже будет в сообщении. Для Telegram скопирую его — останется вставить';
+    note.textContent = 'В сообщении будет ссылка на эти кадры — Андрей увидит ровно их. В WhatsApp текст подставится сам, для Telegram скопирую — останется вставить';
     chosen.innerHTML = marked.map(function (s, i) {
       return '<div class="c"><img src="' + thumb(s) + '" alt="' + title(s) + '">' +
         '<svg viewBox="0 0 500 580" preserveAspectRatio="none" aria-hidden="true"><path d="' + rings[i % 3] +
@@ -645,7 +678,12 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
     }).join('');
     wa.href = WA + '?text=' + encodeURIComponent(message());
   }
-  function message() { return 'Привет! Хочу съёмку, как в: ' + marked.map(title).join(', '); }
+  // в сообщении ссылка на сам выбор: по ней открывается экран с отмеченными кадрами; ниже — что дописать клиенту
+  var SITE = /^https?:/.test(location.protocol) ? location.origin + location.pathname : 'https://ekateribogdana.github.io/rockeroleg/';
+  function refsLink() { return SITE + '?refs=' + marked.join(','); }
+  function message() {
+    return 'Привет! Хочу съёмку, как в этих кадрах:\n' + refsLink() + '\n\nЧто за съёмка: \nКогда: \nГде: ';
+  }
 
   // Telegram не умеет готовый текст по ссылке: копируем список в буфер
   document.getElementById('tg').addEventListener('click', function () {
@@ -703,7 +741,34 @@ footer { padding: 0 36px 32px; display: flex; justify-content: space-between; co
   });
   strips.addEventListener('keydown', function (e) { if (e.key === 'Enter') { var f = e.target.closest('.frame'); if (f) openLoupe(f); } });
   loupe.addEventListener('click', function () { loupe.classList.remove('open'); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') loupe.classList.remove('open'); });
+
+  /* ── экран референсов по ссылке ?refs=id,id: отметки посетителя не трогаем ── */
+  var refsParam = new URLSearchParams(location.search).get('refs');
+  var board = document.getElementById('board');
+  function closeBoard() {
+    board.hidden = true; document.body.classList.remove('board-open');
+    history.replaceState(null, '', location.pathname + location.hash);
+  }
+  if (refsParam) {
+    var refs = refsParam.split(',').filter(function (id, i, a) { return byId[id] && a.indexOf(id) === i; });
+    if (refs.length) {
+      document.getElementById('board-note').textContent = plural(refs.length) + ' с контактного листа, отмеченные как «хочу так же»';
+      document.getElementById('board-grid').innerHTML = refs.map(function (id, i) {
+        var d = byId[id];
+        return '<figure><div class="pic"><img src="' + full(id) + '" alt="' + d.title + '">' +
+          '<svg viewBox="0 0 500 580" preserveAspectRatio="none" aria-hidden="true"><path d="' + rings[i % 3] +
+          '" fill="none" stroke="#c11414" stroke-width="5" stroke-linecap="round" filter="url(#wobble)"/></svg></div>' +
+          '<figcaption><span>' + d.title + (d.cam ? ' <span class="mono">· ' + d.cam + '</span>' : '') + '</span>' +
+          '<a href="https://www.instagram.com/p/' + d.code + '/" target="_blank" rel="noopener">пост в Instagram →</a></figcaption></figure>';
+      }).join('');
+      board.hidden = false; document.body.classList.add('board-open');
+    }
+  }
+  document.getElementById('board-close').addEventListener('click', closeBoard);
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    if (loupe.classList.contains('open')) loupe.classList.remove('open'); else if (!board.hidden) closeBoard();
+  });
 
   /* ── что снимаю ── */
   // [название, что внутри, тема для сообщения, кадры этой съёмки — первый показывается сразу, кадр для телефона, если первый не режется в ширину]
