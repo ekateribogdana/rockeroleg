@@ -140,7 +140,7 @@ img { display: block; }
 .kick { display: block; margin-bottom: 22px; color: var(--red); }
 
 /* ── 2½. что снимаю — противоположность листу: там много мелких кадров, здесь один крупный.
-   Наведение на строку меняет кадр (повторное — следующий кадр этой съёмки); «обсудить» — WhatsApp с готовым текстом.
+   Наведение на строку меняет кадр (повторное — следующий кадр этой съёмки); «обсудить» — чат с Андреем в Telegram (WhatsApp он не использует).
    Цены появятся рядом, когда их пришлёт Андрей */
 .svc { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 0 56px; align-items: start; padding: 88px 36px 64px; } /* воздух до «Связи» */
 .svc-fig { position: sticky; top: 24px; margin: 0; }
@@ -355,7 +355,6 @@ body.board-open { overflow: hidden; }
   </div>
   <div class="links">
     <a class="scrib" id="tg" href="https://t.me/+79060829514" target="_blank" rel="noopener">Telegram</a>
-    <a class="scrib" id="wa" href="https://wa.me/79060829514" target="_blank" rel="noopener">WhatsApp</a>
     <a class="scrib ig" href="https://www.instagram.com/rockeroleg/" target="_blank" rel="noopener">Instagram</a>
     <span class="where mono">Москва · отвечаю в течение дня</span>
   </div>
@@ -477,7 +476,7 @@ body.board-open { overflow: hidden; }
   strips.addEventListener('pointerleave', function () { now.textContent = ''; });
 
   /* ── отметки: плашка и блок связи ── */
-  var WA = 'https://wa.me/79060829514';
+  var TG = 'https://t.me/+79060829514';
   var contactVisible = false;
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (es) { contactVisible = es[0].isIntersecting; updateMarks(); })
@@ -528,7 +527,6 @@ body.board-open { overflow: hidden; }
     var titleEl = document.getElementById('contact-title');
     var note = document.getElementById('contact-note');
     var chosen = document.getElementById('chosen');
-    var wa = document.getElementById('wa');
     // «ваша плёнка» появляется под текстом, только когда в ней есть кадры
     document.getElementById('refs').classList.toggle('none', !n);
     document.getElementById('refs-head').textContent = 'Ваша плёнка · ' + plural(n);
@@ -536,19 +534,17 @@ body.board-open { overflow: hidden; }
       titleEl.innerHTML = 'Ну что,<br>снимаемся?';
       note.textContent = 'Сложно описать, чего хочется? Откройте кадры на листе и нажмите «Хочу так же» — пришлёте их как референсы';
       chosen.innerHTML = '';
-      wa.href = WA;
       if (tg) syncTg();
       return;
     }
     titleEl.innerHTML = 'Ваши референсы:<br>' + plural(n);
-    note.textContent = 'В сообщении будет ссылка на эти кадры — Андрей увидит ровно их. В WhatsApp текст подставится сам, для Telegram скопирую — останется вставить';
+    note.textContent = 'В сообщении будет ссылка на эти кадры — Андрей увидит ровно их. Нажмите Telegram: скопирую текст, останется вставить его в чат';
     chosen.innerHTML = marked.map(function (s, i) {
       return '<div class="c"><img src="' + thumb(s) + '" alt="' + title(s) + '">' +
         '<svg viewBox="0 0 500 580" preserveAspectRatio="none" aria-hidden="true"><path d="' + rings[i % 3] +
         '" fill="none" stroke="#c11414" stroke-width="10" stroke-linecap="round" filter="url(#wobble)"/></svg>' +
         '<button type="button" class="x" data-unmark="' + s + '" aria-label="Снять отметку: ' + title(s) + '">×</button></div>';
     }).join('');
-    wa.href = WA + '?text=' + encodeURIComponent(message());
     if (tg) syncTg();
   }
   // в сообщении ссылка на сам выбор: по ней открывается экран с отмеченными кадрами
@@ -671,10 +667,9 @@ body.board-open { overflow: hidden; }
   ];
   var svcEl = document.getElementById('svc');
   svcEl.innerHTML = svc.map(function (s, i) {
-    var text = 'Здравствуйте, Андрей! Хочу обсудить съёмку: ' + s[2] + '.';
     return '<li data-i="' + i + '"><span class="n mono">' + ('0' + (i + 1)).slice(-2) + '</span>' +
       '<span><span class="name">' + s[0] + '</span><span class="sub">' + s[1] + '</span></span>' +
-      '<a class="ask scrib" href="' + WA + '?text=' + encodeURIComponent(text) + '" target="_blank" rel="noopener"><span class="w">обсудить </span>→</a>' +
+      '<a class="ask scrib" href="' + TG + '" target="_blank" rel="noopener"><span class="w">обсудить </span>→</a>' +
       '<img src="' + full(s[4] || s[3][0]) + '" alt="" loading="lazy"></li>';
   }).join('');
   // большой кадр: два слоя, новый проявляется поверх старого
@@ -697,7 +692,7 @@ body.board-open { overflow: hidden; }
     svcLast = li; svcShow(+li.dataset.i);
   });
   svcEl.addEventListener('pointerleave', function () { svcLast = null; });
-  // вся строка ведёт в WhatsApp; ссылка на кейс внутри — сама по себе
+  // вся строка ведёт в чат с Андреем; ссылка на кейс внутри — сама по себе
   svcEl.addEventListener('click', function (e) {
     var li = e.target.closest('li'); if (!li || e.target.closest('a')) return;
     window.open(li.querySelector('.ask').href, '_blank', 'noopener');
