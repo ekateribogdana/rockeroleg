@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Сайт: wfolio или свой</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f4f1ea;--card:#fbfaf6;--ink:#1d1c1a;--mute:#6b6962;--line:#d9d4c8;--red:#c8312b;--ok:#2f6f4e;--q:#2f5d8a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#171614;--card:#1f1e1b;--ink:#ece8df;--mute:#a29e94;--line:#34322d;--red:#e0574f;--ok:#5fae85;--q:#6f9fd0}}
+*{box-sizing:border-box}
+html{overflow-x:clip}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 Onest,system-ui,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px 96px}
+header{padding:56px 0 32px;border-bottom:1px solid var(--line)}
+.kicker{font:12px/1 "PT Mono",ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+h1{font:500 clamp(34px,6vw,58px)/1.05 Archivo,sans-serif;letter-spacing:-.02em;margin:14px 0 18px}
+h1 .mark{box-shadow:inset 0 -.14em var(--red)}
+h2{font:500 clamp(26px,4vw,34px)/1.1 Archivo,sans-serif;letter-spacing:-.01em;margin:64px 0 10px}
+h3{font:600 18px/1.3 Onest,system-ui,sans-serif;margin:0 0 8px}
+p{margin:0 0 14px;max-width:70ch}
+.lead{font-size:19px}
+.mute{color:var(--mute)}
+a{color:var(--red);text-underline-offset:3px}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px;margin:16px 0;min-width:620px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-weight:600;font-size:13px;color:var(--mute)}
+td:first-child{font-weight:600;white-space:nowrap}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:20px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:20px}
+.card.best{border:2px solid var(--red)}
+.tag{display:inline-block;font:600 11px/1 Onest,system-ui,sans-serif;padding:4px 7px;border-radius:3px;color:#fff;background:var(--red);margin-bottom:10px}
+.card ul{padding-left:18px;margin:6px 0 12px}
+.card li{margin:4px 0}
+.plus{color:var(--ok);font-weight:600}
+.minus{color:var(--red);font-weight:600}
+.note{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--q);border-radius:6px;padding:12px 16px;margin:16px 0 20px;max-width:70ch;font-size:15px}
+.note .k{display:block;font:600 11px/1 Onest,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--q);margin-bottom:6px}
+ol.qs{padding-left:22px}
+ol.qs li{margin:10px 0;max-width:70ch}
+footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--line);font-size:14px;color:var(--mute)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+<div class="kicker">Памятка · сайт rockeroleg.ru · ноябрь 2026</div>
+<h1>Остаться на wfolio или <span class="mark">переехать</span>?</h1>
+<p class="lead">Андрей, сейчас rockeroleg.ru сделан на wfolio. Новый сайт (<a href="https://ekateribogdana.github.io/rockeroleg/">прототип</a>) — отдельный, его можно поставить на тот же адрес. Здесь коротко: чем они отличаются, какие есть варианты и что нужно решить.</p>
+</header>
+
+<h2>Коротко</h2>
+<p class="lead">wfolio — это не только сайт, но и <b>галереи для клиентов</b>: туда загружают съёмку, клиент смотрит, отбирает кадры и скачивает. Новый сайт этого не умеет — он про то, чтобы тебя нашли и захотели снимать.</p>
+<p>Поэтому выбор не «или-или». Если ты отдаёшь клиентам фото через wfolio, самый спокойный вариант — <b>новый сайт на rockeroleg.ru, а галереи оставить на wfolio</b> (вариант 3 ниже).</p>
+
+<h2>Чем отличаются</h2>
+<div class="tw"><table>
+<tr><th></th><th>wfolio (как сейчас)</th><th>Новый сайт (GitHub)</th></tr>
+<tr><td>Вид</td><td>Шаблоны конструктора, похож на многие сайты фотографов</td><td>Сделан под тебя: контактный лист, серии, открытка «Обо мне», «Хочу так же»</td></tr>
+<tr><td>Цена</td><td>Платная подписка, год или месяц. Есть отдельный тариф только с галереями — он дешевле, чем «Сайт + Галереи»</td><td>Хостинг бесплатный. Платишь только за домен rockeroleg.ru, как и сейчас</td></tr>
+<tr><td>Кто правит</td><td>Ты сам, в конструкторе, без кода</td><td>Правки делаются в коде — нужен помощник, который этим занимается. Сам быстро не поменяешь</td></tr>
+<tr><td>Галереи клиентам</td><td>Есть: отбор кадров, скачивание, пароли, водяные знаки, печать</td><td>Нет. Нужен wfolio-галереи или облако (Яндекс Диск и т. п.)</td></tr>
+<tr><td>Заявки и оплата</td><td>Форма заявки, онлайн-оплата на платных тарифах</td><td>Кнопки WhatsApp и Telegram. Онлайн-оплаты нет</td></tr>
+<tr><td>Поиск в Яндексе</td><td>Настроено из коробки</td><td>Сейчас закрыт от поисковиков (это прототип). При переезде открыть и настроить один раз</td></tr>
+<tr><td>Адрес</td><td>rockeroleg.ru</td><td>Тот же rockeroleg.ru — адрес переключается в настройках домена</td></tr>
+<tr><td>Готовность</td><td>Работает</td><td>Почти готов. Не хватает цен, текстов серий, твоего почерка и пары ответов от тебя</td></tr>
+</table></div>
+
+<h2>Три варианта</h2>
+<div class="opts">
+<div class="card">
+<h3>1. Остаться на wfolio</h3>
+<p class="plus">Плюсы</p>
+<ul><li>Ничего не переносить</li><li>Правишь сам, когда хочешь</li><li>Галереи, оплата и заявки в одном месте</li></ul>
+<p class="minus">Минусы</p>
+<ul><li>Сайт выглядит как шаблон</li><li>Идеи нового сайта перенести можно только частично — конструктор многого не умеет</li></ul>
+</div>
+<div class="card">
+<h3>2. Переехать полностью</h3>
+<p class="plus">Плюсы</p>
+<ul><li>Сайт, который выглядит как ты</li><li>Подписка wfolio не нужна</li></ul>
+<p class="minus">Минусы</p>
+<ul><li>Галереи клиентам придётся отдавать через облако — без отбора кадров и красивой подачи</li><li>Каждая правка — через помощника</li><li>Нет онлайн-оплаты</li></ul>
+</div>
+<div class="card best">
+<span class="tag">Советуем</span>
+<h3>3. Сайт новый, галереи на wfolio</h3>
+<p class="plus">Плюсы</p>
+<ul><li>Сайт, который выглядит как ты, на rockeroleg.ru</li><li>Клиенты получают фото как раньше</li><li>Можно перейти на тариф только с галереями — он дешевле</li></ul>
+<p class="minus">Минусы</p>
+<ul><li>Два места вместо одного</li><li>Правки сайта — через помощника</li></ul>
+</div>
+</div>
+<div class="note"><span class="k">Важно</span>Галереи на wfolio могут жить на своём адресе — например, на поддомене вроде gallery.rockeroleg.ru. Тогда клиент видит твоё имя и там, и там. Точные условия и цены тарифов лучше посмотреть в твоём кабинете wfolio: они меняются, и на первый год бывают скидки.</div>
+
+<h2>Чтобы решить, ответь на 4 вопроса</h2>
+<ol class="qs">
+<li><b>Ты отдаёшь клиентам фото через галереи wfolio?</b> Если да — галереи стоит оставить (вариант 1 или 3). Если отдаёшь через облако или мессенджер — подходит и вариант 2.</li>
+<li><b>Принимаешь ли оплату через сайт?</b> Если да — она есть только на wfolio.</li>
+<li><b>Как часто ты сам что-то меняешь на сайте?</b> Если раз в неделю — неудобно ждать помощника. Если раз в пару месяцев — не страшно.</li>
+<li><b>Нравится ли тебе новый сайт настолько, чтобы переехать?</b> <a href="https://ekateribogdana.github.io/rockeroleg/">Посмотри прототип</a> с телефона и компьютера.</li>
+</ol>
+
+<h2>Что будет дальше</h2>
+<div class="tw"><table>
+<tr><th>Если выбрал</th><th>Шаги</th></tr>
+<tr><td>Остаться</td><td>Переносим на wfolio то, что получится: тексты, подборку кадров, услуги и цены. Новый сайт остаётся прототипом.</td></tr>
+<tr><td>Сайт новый, галереи на wfolio</td><td>1. Ты отвечаешь на вопросы по сайту (цены, город, тексты серий). 2. Доделываем сайт. 3. Переключаем rockeroleg.ru на новый сайт и открываем его для Яндекса. 4. Галереи переводим на поддомен и, если хочешь, на тариф только с галереями.</td></tr>
+<tr><td>Переехать полностью</td><td>То же, что выше, плюс решаем, куда отдавать фото клиентам, и только после этого отключаем подписку wfolio. Старые галереи клиентов заранее скачать или перенести.</td></tr>
+</table></div>
+
+<footer>Возможности wfolio — по странице wfolio.ru на ноябрь 2026. Цены и тарифы не приводим: они меняются, смотри в своём кабинете.</footer>
+</div>
+</body>
+</html>
